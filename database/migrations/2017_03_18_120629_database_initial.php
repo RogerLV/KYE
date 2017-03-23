@@ -12,7 +12,20 @@ class DatabaseInitial extends Migration
      */
     public function up()
     {
-        //
+        // staff
+        Schema::create('Staff', function (Blueprint $table) {
+            
+        });
+
+        // department
+
+        // role mapping
+
+        // occupational risk
+
+        // key operation
+
+        // operation log
     }
 
     /**
@@ -23,5 +36,6 @@ class DatabaseInitial extends Migration
     public function down()
     {
         //
+        Schema::drop('Staff');
     }
 }
