@@ -76,8 +76,10 @@ class DatabaseInitial extends Migration
         // parameters
         Schema::create('Parameters', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('key', 100);
-            $table->string('value', 100);
+            $table->string('key1', 100);
+            $table->string('key2', 100)->nullable();
+            $table->string('key3', 100)->nullable();
+            $table->string('value', 100)->nullable();
 
             $table->timestamps();
         });
