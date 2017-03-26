@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Model;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Parameter extends Model
 {
-    public $table = 'Parameters';
+    protected $table = 'Parameters';
 }

@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($roleList as $entry) {
-            $roleIns = new \App\Model\RoleList();
+            $roleIns = new \App\Models\SystemRole();
             $roleIns->lanID = $entry[0];
             $roleIns->roleID = $entry[1];
             $roleIns->dept = $entry[2];
@@ -45,7 +45,7 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($paras as $entry) {
-            $paraIns = new \App\Model\Parameter();
+            $paraIns = new \App\Models\Parameter();
             $paraIns->key1 = $entry[0];
             $paraIns->key2 = $entry[1];
             $paraIns->value = $entry[2];
