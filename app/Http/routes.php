@@ -1,7 +1,8 @@
 <?php
 
 Route::get('test', function () {
-    throw new App\Exceptions\AppException('ASMK001', 'Data Error.');
+    // throw new App\Exceptions\AppException('ASMK001', 'Data Error.');
+    echo ASSET_DIR.'file-input/css/fileinput.min.css';
 });
 
 Route::get('dummyEntry', function () {
@@ -16,5 +17,5 @@ Route::group(['middleware' => ['welcome']], function () {
 
 Route::group(['middleware' => ['web']], function () {
 
-
+	Route::get('RoleList', 'RoleController@listAll')->name('RoleList');
 });

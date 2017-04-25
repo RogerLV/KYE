@@ -2,7 +2,7 @@
 
 namespace App\Logic\LoginUser;
 
-use App\Models\SystemRole;
+use App\Models\UserRole;
 
 class LoginUser
 {
@@ -10,10 +10,10 @@ class LoginUser
 
     public function __construct($lanID)
     {
-        $this->activeRole = SystemRole::where('lanID', $lanID)->where('active', true)->first();
+        $this->activeRole = UserRole::where('lanID', $lanID)->where('active', true)->first();
 
         if (is_null($this->activeRole)){
-            $this->activeRole = SystemRole::initActiveRole($lanID);
+            $this->activeRole = UserRole::initActiveRole($lanID);
         }
     }
 
@@ -25,7 +25,7 @@ class LoginUser
     public function setActiveRole($id)
     {
         $lanID = $this->activeRole->lanID;
-        $this->activeRole = SystemRole::setActiveRole($lanID, $id);
+        $this->activeRole = UserRole::setActiveRole($lanID, $id);
     }
 
     public function __get($attr)

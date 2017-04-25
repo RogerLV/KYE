@@ -1,45 +1,51 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Laravel</title>
+@extends('layouts.app')
 
-        <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
 
-        <style>
-            html, body {
-                height: 100%;
-            }
+@section('CSSContent')
+<style type="text/css">
+    button.page-link {
+        height: 80px;
+        width: 120px;
+        border-radius: 10px;
+        border: 1px solid #bce8f1;
+        background-color: #d9edf7;
+    }
 
-            body {
-                margin: 0;
-                padding: 0;
-                width: 100%;
-                display: table;
-                font-weight: 100;
-                font-family: 'Lato';
-            }
+    button.page-link > .glyphicon {
+        font-size: 40px;
+        color: #31708f;
+    }
+</style>
+@endsection
 
-            .container {
-                text-align: center;
-                display: table-cell;
-                vertical-align: middle;
-            }
 
-            .content {
-                text-align: center;
-                display: inline-block;
-            }
+@section('HTMLContent')
 
-            .title {
-                font-size: 96px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <div class="content">
-                <div class="title">Laravel 5</div>
-            </div>
+    <h3>{{ $userInfo->uEngName }} {{ $userInfo->uCnName }}</h3>
+    <br>
+
+    <h4>请选择您在系统中的角色:</h4>
+        <div class="list-group">
+        @foreach($roleList as $roleIns)
+            @if($roleIns->id == $selectedMapID)
+                <a href="#" class="list-group-item active">
+            @else
+                <a href="#" class="list-group-item role-selection" data-mapid="{{ $roleIns->id }}">
+            @endif
+                {{ $roleIns->role->enName }}
+            </a>
+        @endforeach
         </div>
-    </body>
-</html>
+    <br>
+
+    <h4>您可以访问以下页面:</h4>
+    @foreach($pages as $pageIns)
+        <button target="_blank" class="page-link" onclick="window.open('{{ route($pageIns->name) }}')">
+            <span class="{{ $pageIns->icon }}"></span><br>
+            {{ $pageIns->title }}
+        </button>&nbsp;
+    @endforeach
+
+@endsection
+
+

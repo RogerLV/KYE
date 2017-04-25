@@ -7,5 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Footprint extends Model
 {
     protected $table = 'Footprints';
+
     protected $connection = 'basedata';
+
+    protected $fillable = ['lanID', 'uri', 'app'];
 }

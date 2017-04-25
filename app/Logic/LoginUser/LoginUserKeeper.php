@@ -37,12 +37,12 @@ class LoginUserKeeper
         }
 
         // check if login user roleID is still valid
-        if (!App\Models\SystemRole::isActive($sessionUser->getAciveRole())) {
+        if (!\App\Models\UserRole::isActive($sessionUser->getActiveRole())) {
             throw new AppException('LOGINUSERKEEPER002', ERROR_MESSAGE_NOT_AUTHORIZED);
         }
 
         // record footprints
-        App\Models\Footprint::create([
+        \App\Models\Footprint::create([
             'lanID' => $sessionUser->lanID,
             'uri' => request()->path(),
             'app' => env('APP_NAME'),

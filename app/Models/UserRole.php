@@ -6,13 +6,23 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Exceptions\AppException;
 
-class SystemRole extends Model
+class UserRole extends Model
 {
     use SoftDeletes;
 
-    protected $table = 'RoleList';
+    protected $table = 'UserRoles';
 
     protected $dates = ['deleted_at'];
+
+    public function user()
+    {
+        return $this->hasOne('App\Models\User', 'lanID', 'lanID');
+    }
+
+    public function role()
+    {
+        return $this->hasOne('App\Models\Role', 'id', 'roleID');
+    }
 
     public static function initActiveRole($lanID)
     {
@@ -22,7 +32,7 @@ class SystemRole extends Model
                     ->first();
 
         if (is_null($ins)) {
-            throw new AppException('SYSTEMROLEMODEL001', ERROR_MESSAGE_NOT_AUTHORIZED);
+            throw new AppException('USERROLEMODEL001', ERROR_MESSAGE_NOT_AUTHORIZED);
         }
 
         self::setActiveRole($lanID, $ins->id);
@@ -31,14 +41,14 @@ class SystemRole extends Model
 
     public static function setActiveRole($lanID, $mapID)
     {
-        $roleIns = SystemRole::find($mapID);
+        $roleIns = self::find($mapID);
         if (!self::activable($lanID, $roleIns))
         {
-            throw new AppException('SYSTEMROLEMODEL002', 'The specified role cannot be activated.');
+            throw new AppException('USERROLEMODEL002', 'The specified role cannot be activated.');
         }
 
         // first set original role inactive
-        SystemRole::where('lanID', $lanID)
+        self::where('lanID', $lanID)
             ->where('active', true)
             ->update(['active' => false]);
 
@@ -49,13 +59,13 @@ class SystemRole extends Model
         return $roleIns;
     }
 
-    public static function isActive(SystemRole $roleIns)
+    public static function isActive(UserRole $roleIns)
     {
-        $roleIns = SystemRole::find($roleIns->id);
+        $roleIns = self::find($roleIns->id);
         return !is_null($roleIns) && $roleIns->active;
     }
 
-    private static function activable($lanID, SystemRole $roleIns)
+    private static function activable($lanID, UserRole $roleIns)
     {
         return !is_null($roleIns)
                 && $roleIns->lanID == $lanID

@@ -26,8 +26,32 @@ class DatabaseInitial extends Migration
             $table->softDeletes();
         });
 
-        // role mapping
-        Schema::create('RoleList', function (Blueprint $table) {
+        // Roles
+        Schema::create('Roles', function (Blueprint $table) {
+            $table->integer('id')->primary();
+            $table->string('enName');
+        });
+
+        // Pages
+        Schema::create('Pages', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->string('title');
+            $table->boolean('showInEntrance');
+            $table->string('icon')->nullable();
+            $table->string('controller')->nullable();
+            $table->string('action')->nullable();
+        });
+
+        // Role Pages
+        Schema::create('RolePages', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('roleID');
+            $table->integer('pageID');
+        });
+
+        // User Roles
+        Schema::create('UserRoles', function (Blueprint $table) {
             $table->increments('id');
             $table->string('lanID', 20);
             $table->integer('roleID');
@@ -94,7 +118,10 @@ class DatabaseInitial extends Migration
     public function down()
     {
         Schema::drop('Staff');
-        Schema::drop('RoleList');
+        Schema::drop('UserRoles');
+        Schema::drop('Roles');
+        Schema::drop('Pages');
+        Schema::drop('RolePages');
         Schema::drop('OccupationalRisk');
         Schema::drop('KYEOperations');
         Schema::drop('OperationLogs');
