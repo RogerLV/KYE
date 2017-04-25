@@ -39,6 +39,7 @@
     <br>
 
     <h4>您可以访问以下页面:</h4>
+    <br>
     @foreach($pages as $pageIns)
         <button target="_blank" class="page-link" onclick="window.open('{{ route($pageIns->name) }}')">
             <span class="{{ $pageIns->icon }}"></span><br>

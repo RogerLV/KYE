@@ -21,16 +21,17 @@ class DatabaseSeeder extends Seeder
     private function seedRoles()
     {
         $roleList = [
-            1 => 'Maker',
-            2 => 'Checker',
-            3 => 'App Admin',
-            4 => 'Sys Admin',
+            [1, 'Maker', false],
+            [2, 'Checker', false],
+            [3, 'App Admin', false],
+            [4, 'Sys Admin', true],
         ];
 
-        foreach ($roleList as $roleID => $roleName) {
+        foreach ($roleList as $roleInfo) {
             $roleIns = new \App\Models\Role();
-            $roleIns->id = $roleID;
-            $roleIns->enName = $roleName;
+            $roleIns->id = $roleInfo[0];
+            $roleIns->enName = $roleInfo[1];
+            $roleIns->hide = $roleInfo[2];
 
             $roleIns->save();
         }
@@ -145,6 +146,11 @@ class DatabaseSeeder extends Seeder
         $roleList = [
             ['LUC1', 4, 'ITD'],
             ['LUC1', 3, 'ITD'],
+            ['LHI1', 3, 'HRD'],
+            ['LHI1', 2, 'HRD'],
+            ['LUC1', 2, 'ITD'],
+            ['LUC1', 1, 'ITD'],
+            ['TYI1', 1, 'HRD'],
         ];
 
         foreach ($roleList as $entry) {

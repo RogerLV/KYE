@@ -30,6 +30,7 @@ class DatabaseInitial extends Migration
         Schema::create('Roles', function (Blueprint $table) {
             $table->integer('id')->primary();
             $table->string('enName');
+            $table->boolean('hide');
         });
 
         // Pages
