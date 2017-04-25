@@ -18,4 +18,5 @@ Route::group(['middleware' => ['welcome']], function () {
 Route::group(['middleware' => ['web']], function () {
 
 	Route::get('RoleList', 'RoleController@listAll')->name('RoleList');
+	Route::post('role/select', 'RoleController@select')->name('RoleSelect');
 });

@@ -49,3 +49,29 @@
 @endsection
 
 
+@section('javascriptContent')
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.role-selection').click(function () {
+            var mapid = $(this).data('mapid');
+
+            $.ajax({
+                headers: headers,
+                url: "{{ route('RoleSelect') }}",
+                data: {'mapid': mapid},
+                type: 'POST',
+                beforeSend: function () {
+                    setAlertText('正在切换');
+                    $('#alert-modal').modal('show');
+                },
+                success: function (data) {
+                    $('#alert-modal').modal('hide');
+                    handleReturn(data, function () {
+                        window.location.reload();
+                    });
+                }
+            });
+        });
+    });
+</script>
+@endsection
