@@ -13,4 +13,15 @@ class User extends Model
     {
         return $this->uEngName.' '.$this->uCnName;
     }
+
+    public static function getIns($lanID)
+    {
+    	$ins = self::where('lanID', $lanID)->first();
+
+    	if (is_null($ins)) {
+    		throw new \App\Exceptions\AppException('USERMODEL001', 'Incorrect User Info.');
+    	}
+
+    	return $ins;
+    }
 }

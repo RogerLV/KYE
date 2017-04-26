@@ -58,7 +58,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'RoleList',
-                'Role List', 
+                'User List',
                 true, 
                 'glyphicon glyphicon-user', 
                 'RoleController', 

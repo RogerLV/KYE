@@ -10,7 +10,7 @@ class UserRole extends Model
 {
     use SoftDeletes;
 
-    protected $table = 'UserRoles';
+    public $table = 'UserRoles';
 
     protected $dates = ['deleted_at'];
 
@@ -63,6 +63,52 @@ class UserRole extends Model
     {
         $roleIns = self::find($roleIns->id);
         return !is_null($roleIns) && $roleIns->active;
+    }
+
+    public static function getIns($mapID)
+    {
+        $instance = self::find($mapID);
+
+        if (is_null($instance)) {
+            throw new AppException('USERROLEMODEL003', 'Incorrect Role Info.');
+        }
+
+        return $instance;
+    }
+
+    public static function removeIns($mapID)
+    {
+        $instance = self::getIns($mapID);
+        UpdateLog::logDelete($instance);
+        $instance->delete();
+    }
+
+    public static function insertIns($roleID, $lanID, $dept)
+    {
+        if (self::exists($roleID, $lanID, $dept)) {
+            throw new AppException('USERROLEMODEL004', 'User Already Exists.');
+        }
+
+        // add role
+        $userRoleIns = new UserRole();
+        $userRoleIns->roleID = $roleID;
+        $userRoleIns->lanID = $lanID;
+        $userRoleIns->dept = $dept;
+
+        $userRoleIns->save();
+
+        UpdateLog::logInsert($userRoleIns);
+    }
+
+    private static function exists($roleID, $lanID, $dept)
+    {
+        $result = self::where([
+            ['roleID', '=', $roleID],
+            ['lanID', '=', $lanID],
+            ['dept', '=', $dept],
+        ])->first();
+
+        return !is_null($result);
     }
 
     private static function activable($lanID, UserRole $roleIns)
