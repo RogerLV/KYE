@@ -17,8 +17,12 @@ Route::group(['middleware' => ['welcome']], function () {
 
 Route::group(['middleware' => ['web']], function () {
 
-	Route::get('RoleList', 'RoleController@listAll')->name('RoleList');
+	Route::get('role/list', 'RoleController@listAll')->name('RoleList');
 	Route::post('role/select', 'RoleController@select')->name('RoleSelect');
     Route::post('role/remove', 'RoleController@remove')->name('RoleRemove');
     Route::post('role/add', 'RoleController@add')->name('RoleAdd');
+
+    Route::get('staff/list', 'StaffController@listAll')->name('StaffList');
+    Route::post('staff/upload', 'StaffController@receiveStaffList')->name('StaffUpload');
+    Route::post('staff/confirm', 'StaffController@confirmStaffList')->name('StaffConfirm');
 });

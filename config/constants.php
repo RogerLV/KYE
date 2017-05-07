@@ -1,6 +1,10 @@
 <?php
 
 define('ASSET_DIR', env('ASSET_DIR'));
+define('STORAGE_PATH', env('STORAGE_PATH'));
+
+define('STORAGE_PATH_STAFF_LIST', STORAGE_PATH.'StaffList');
+define('STORAGE_PATH_OCCUPATIONAL_RISK', STORAGE_PATH.'OccupationalRisk');
 
 define('ROLE_ID_SYS_ADMIN', 4);
 define('ROLE_ID_APP_ADMIN', 3);

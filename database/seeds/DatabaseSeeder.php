@@ -16,6 +16,8 @@ class DatabaseSeeder extends Seeder
         $this->seedPages();
         $this->seedUserRoles();
         $this->seedParameters();
+
+        $this->createFolders();
     }
 
     private function seedRoles()
@@ -127,6 +129,7 @@ class DatabaseSeeder extends Seeder
         }
 
         $pageControl = [
+            1 => [1, 2, 3, 4],
             3 => [1, 2, 3, 4],
         ];
 
@@ -180,6 +183,21 @@ class DatabaseSeeder extends Seeder
             $paraIns->key2 = $entry[1];
             $paraIns->value = $entry[2];
             $paraIns->save();
+        }
+    }
+
+    private function createFolders()
+    {
+        $folders = [
+            'StaffList',
+            'OccupationalRisk',
+        ];
+
+        foreach ($folders as $folder) {
+            $dir = STORAGE_PATH.$folder;
+            if (!file_exists($dir)) {
+                mkdir($dir, 0777, true);
+            }
         }
     }
 }

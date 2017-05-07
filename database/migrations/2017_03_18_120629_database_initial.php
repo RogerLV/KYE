@@ -15,11 +15,11 @@ class DatabaseInitial extends Migration
         // staff
         Schema::create('Staff', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('lanID', 20);
-            $table->string('employNo')->nullable();
+            $table->string('employNo');
+            $table->string('department');
             $table->string('uEngName');
             $table->string('uCnName')->nullable();
-            $table->string('sectionID')->nullable();
+            $table->string('section')->nullable();
             $table->date('joinDate')->nullable();
             $table->date('leaveDate')->nullable();
 
@@ -95,7 +95,6 @@ class DatabaseInitial extends Migration
             $table->string('checkedBy', 20);
 
             $table->timestamps();
-            $table->softDeletes();
         });
 
         // parameters

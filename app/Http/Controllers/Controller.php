@@ -43,7 +43,7 @@ class Controller extends BaseController
         $rtn = [];
         foreach ($paras as $para) {
 
-            if (empty(request()->input($para))) {
+            if (empty(trim(request()->input($para)))) {
                 throw new AppException('CTR002', ERROR_MESSAGE_DATA_ERROR);
             }
 
