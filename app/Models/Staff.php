@@ -12,10 +12,22 @@ class Staff extends Model
 
     protected $fillable = ['employNo', 'department', 'uEngName', 'section', 'joinDate'];
 
+    public static function updateIns($staffInfo)
+    {
+        $staffIns = self::where('employNo', $staffInfo['employNo'])->first();
+        $staffIns->department = $staffInfo['department'];
+        $staffIns->uEngName = $staffInfo['uEngName'];
+        $staffIns->section = $staffInfo['section'];
+        $staffIns->joinDate = $staffInfo['joinDate'];
+
+        StaffOperationLog::updateLog($staffIns);
+        $staffIns->save();
+    }
+
     public static function insertIns($staffInfo)
     {
         if (self::exists($staffInfo['employNo'])) {
-            throw new AppException('STFMODEL004', 'Staff Already Exists.');
+            throw new AppException('STFMODEL001', 'Staff Already Exists.');
         }
 
         // add Staff
@@ -23,7 +35,7 @@ class Staff extends Model
 
         $staffIns->save();
 
-        StaffOperationLog::add($staffIns);
+        StaffOperationLog::addLog($staffIns);
     }
 
     private static function exists($employNo)

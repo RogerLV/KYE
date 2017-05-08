@@ -60,7 +60,11 @@ class StaffController extends Controller
 
         $toBeAdded = $toBeUpdated = [];
         foreach ($staffList as $staffEntry) {
-            // add or update
+
+            $timestamp = strtotime(str_replace('/', '-', $staffEntry[INDEX_JOIN_DATE]));
+            $staffEntry[INDEX_JOIN_DATE] = date("Y-m-d", $timestamp);
+
+            // add
             $existingStaffEntry = $existingStaff->get($staffEntry[INDEX_EMP_NO]);
 
             if (is_null($existingStaffEntry)) {
@@ -68,18 +72,19 @@ class StaffController extends Controller
                 continue;
             }
 
+            // update
+            $updatedCols = [0, 0, 0, 0];
             foreach (range(INDEX_EMP_NAME, INDEX_JOIN_DATE) as $index) {
-                $updatedCols = [];
                 if ($staffEntry[$index] != $existingStaffEntry->$mappingAry[$index]) {
-                    $updatedCols[] = $mappingAry[$index];
+                    $updatedCols[$index] = 1;
                 }
+            }
 
-                if (!empty($updatedCols)) {
-                    $toBeUpdated[$staffEntry[INDEX_EMP_NO]] = [
-                        'updatedCols' => $updatedCols,
-                        'instance' => $staffEntry,
-                    ];
-                }
+            if (array_sum($updatedCols)) {
+                $toBeUpdated[$staffEntry[INDEX_EMP_NO]] = [
+                    'updatedCols' => $updatedCols,
+                    'instance' => $staffEntry,
+                ];
             }
         }
         
@@ -109,12 +114,21 @@ class StaffController extends Controller
                 'department' => $staffEntry->dept,
                 'uEngName' => $staffEntry->name,
                 'section' => $staffEntry->section,
-                'joinDate' => $newDate = date("Y-m-d", strtotime($staffEntry->joindate)),
+                'joinDate' => $staffEntry->joindate,
             ]);
         }
-        
 
         // confirm update staff
+        $toBeUpdatedStaff = json_decode($paras['tobeupdatedstaff']);
+        foreach ($toBeUpdatedStaff as $staffEntry) {
+            Staff::updateIns([
+                'employNo' => $staffEntry->empno,
+                'department' => $staffEntry->dept,
+                'uEngName' => $staffEntry->name,
+                'section' => $staffEntry->section,
+                'joinDate' => $staffEntry->joindate,
+            ]);
+        }
 
         return response()->json(['status' => 'good']);
     }

@@ -91,6 +91,31 @@
                         tobeAddedStaff.push(staffIns);
                     });
 
+                    var staffAttr = {
+                        1 : 'name',
+                        2 : 'dept',
+                        3 : 'section',
+                        4 : 'joindate',
+                    };
+
+                    $.each(data.response.toBeUpdated, function (idx, val) {
+                        var staffIns = {};
+                        var tr = $('<tr/>').append($('<td/>', {
+                            text: (staffIns.empno = val['instance'][0])
+                        }));
+
+                        $.each(staffAttr, function (key, attr) {
+                            tr.append($("<td/>", {
+                                bgcolor: val['updatedCols'][key] ? 'grey' : '',
+                                text: (staffIns[attr] = val['instance'][key])
+                            }));
+                        });
+
+                        $('#update-staff-table-body').append(tr);
+
+                        toBeUpdatedStaff.push(staffIns);
+                    });
+
                     $('#confirm-staff-modal').modal('show');
                 });
             });
