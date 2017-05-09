@@ -12,6 +12,11 @@ class Staff extends Model
 
     protected $fillable = ['employNo', 'department', 'uEngName', 'section', 'joinDate'];
 
+    public function scopeInService($query)
+    {
+        return $query->whereNull('leaveDate');
+    }
+
     public static function updateIns($staffInfo)
     {
         $staffIns = self::where('employNo', $staffInfo['employNo'])->first();

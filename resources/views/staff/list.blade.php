@@ -57,12 +57,57 @@
             </div>
         </div>
     @endif
+
+    <h4>Select Department</h4>
+    <select class="form-control" id="select-dept">
+        <option selected value="all">Show all</option>
+        @foreach($deptOptions as $deptOption)
+            <option value="{{ $deptOption->department }}">{{ $deptOption->department }}</option>
+        @endforeach
+    </select>
+    <br>
+
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Employ No</th>
+                <th>Name</th>
+                <th>Department</th>
+                <th>Section</th>
+                <th>Join Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php $i=1; ?>
+            @foreach($staff as $staffEntry)
+                <tr class="staff-entry" data-dept="{{ $staffEntry->department }}">
+                    <td>{{ $i++ }}</td>
+                    <td>{{ $staffEntry->employNo }}</td>
+                    <td>{{ $staffEntry->uEngName }}</td>
+                    <td>{{ $staffEntry->department }}</td>
+                    <td>{{ $staffEntry->section }}</td>
+                    <td>{{ $staffEntry->joinDate }}</td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
 @endsection
 
 
 @section('javascriptContent')
 <script type="text/javascript">
     $(document).ready(function () {
+        $("#select-dept").change(function () {
+            var deptName = $(this).val();
+            if ('all' == deptName) {
+                $("tr.staff-entry").show();
+            } else {
+                $("tr.staff-entry").hide();
+                $("tr.staff-entry[data-dept='"+deptName+"']").show();
+            }
+        });
+
         @if($editable)
 
             var toBeUpdatedStaff = [];

@@ -13,7 +13,9 @@ class StaffController extends Controller
 
         return view('staff.list')
                 ->with('title', 'Staff List')
-                ->with('editable', $this->editable());
+                ->with('editable', $this->editable())
+                ->with('staff', Staff::inService()->get())
+                ->with('deptOptions', Staff::select('department')->inService()->distinct()->get());
     }
 
     public function receiveStaffList()
