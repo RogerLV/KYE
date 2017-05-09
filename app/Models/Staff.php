@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Staff extends Model
 {
+    use SoftDeletes;
+
     public $table = 'Staff';
 
     public $timestamps = false;
@@ -25,7 +28,7 @@ class Staff extends Model
         $staffIns->section = $staffInfo['section'];
         $staffIns->joinDate = $staffInfo['joinDate'];
 
-        StaffOperationLog::updateLog($staffIns);
+        StaffOperationLog::logUpdate($staffIns);
         $staffIns->save();
     }
 
@@ -40,7 +43,23 @@ class Staff extends Model
 
         $staffIns->save();
 
-        StaffOperationLog::addLog($staffIns);
+        StaffOperationLog::logInsert($staffIns);
+    }
+
+    public static function deleteIns($employNo, $leaveDate)
+    {
+        $staffIns = self::where('employNo', $employNo)->first();
+
+        if (is_null($staffIns)) {
+            throw new AppException('STFMODEL002', 'Staff do not exist.');
+        }
+
+        $staffIns->leaveDate = $leaveDate;
+        $staffIns->save();
+
+        $staffIns->delete();
+
+        StaffOperationLog::logDelete($staffIns);
     }
 
     private static function exists($employNo)

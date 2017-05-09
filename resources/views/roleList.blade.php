@@ -139,7 +139,7 @@
                 var lanid = $('#select-user').val();
 
                 if (0 == roleid.length || 0 == lanid.length) {
-                    setAlertText('请选择角色和用户。');
+                    setAlertText('Role and User are mandatory');
                     $('#alert-modal').modal('show');
                     return;
                 }

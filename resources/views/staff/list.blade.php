@@ -1,6 +1,15 @@
 @extends('layouts.app')
 
 
+@section('head')
+    @if($editable)
+        {{-- jQuery UI Dependencies--}}
+        <link rel="stylesheet" href="{{ ASSET_DIR.'css/jquery-ui.min.css' }}">
+        <script type="text/javascript" src="{{ ASSET_DIR.'js/jquery-ui.min.js' }}"></script>
+    @endif
+@endsection
+
+
 @section('HTMLContent')
     @if($editable)
         <p style="color:red"><i>* File uploaded must be csv formatted.</i></p>
@@ -14,7 +23,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button class="close" type="button" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Add User</h4>
+                        <h4 class="modal-title">Add Staff</h4>
                     </div>
                     <div class="modal-body">
                         <h4>Staff to be Added</h4>
@@ -76,28 +85,91 @@
                 <th>Department</th>
                 <th>Section</th>
                 <th>Join Date</th>
+                @if($editable)
+                    <th>Edit</th>
+                    <th>Remove</th>
+                @endif
             </tr>
         </thead>
         <tbody>
             <?php $i=1; ?>
             @foreach($staff as $staffEntry)
-                <tr class="staff-entry" data-dept="{{ $staffEntry->department }}">
+                <tr class="staff-entry" data-dept="{{ $staffEntry->department }}" 
+                    data-employ-no="{{ $staffEntry->employNo }}">
                     <td>{{ $i++ }}</td>
-                    <td>{{ $staffEntry->employNo }}</td>
-                    <td>{{ $staffEntry->uEngName }}</td>
-                    <td>{{ $staffEntry->department }}</td>
-                    <td>{{ $staffEntry->section }}</td>
-                    <td>{{ $staffEntry->joinDate }}</td>
+                    <td class="employ-no">{{ $staffEntry->employNo }}</td>
+                    <td class="employ-name">{{ $staffEntry->uEngName }}</td>
+                    <td class="department">{{ $staffEntry->department }}</td>
+                    <td class="section">{{ $staffEntry->section }}</td>
+                    <td class="join-date">{{ $staffEntry->joinDate }}</td>
+                    @if($editable)
+                        <td>
+                            <button type="button" class="btn btn-info btn-xs">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </button>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-danger btn-xs" 
+                                    data-toggle="modal" data-target="#remove-staff-modal">
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </button>
+                        </td>
+                    @endif
                 </tr>
             @endforeach
         </tbody>
     </table>
+
+    @if($editable)
+        <div id="remove-staff-modal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" type="button" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Remove Staff</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Employ No</label>
+                            <input type="text" class="form-control employ-no-input" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" class="form-control employ-name-input" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Department</label>
+                            <input type="text" class="form-control department-input" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Section</label>
+                            <input type="text" class="form-control section-input" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Join Date</label>
+                            <input type="text" class="form-control join-date-input" readonly>
+                        </div>
+                        <div class="form-group required">
+                            <label for='leave-date'>Leave Date</label>
+                            <input type="text" id="leave-date" class="form-control datepicker" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" 
+                                data-dismiss="modal" id="remove-staff-button">Remove</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 @endsection
 
 
 @section('javascriptContent')
 <script type="text/javascript">
     $(document).ready(function () {
+
         $("#select-dept").change(function () {
             var deptName = $(this).val();
             if ('all' == deptName) {
@@ -109,6 +181,49 @@
         });
 
         @if($editable)
+
+            $(".datepicker").datepicker({
+                dateFormat: "yy-mm-dd"
+            });
+
+            $('#remove-staff-modal').on('show.bs.modal', function (event) {
+                var tr = $(event.relatedTarget).parents('tr');
+                var employNo = tr.find("td.employ-no").text();
+                var employName = tr.find("td.employ-name").text();
+                var department = tr.find("td.department").text();
+                var section = tr.find('td.section').text();
+                var joinDate = tr.find("td.join-date").text();
+
+                $(this).find("input.employ-no-input").val(employNo);
+                $(this).find("input.employ-name-input").val(employName);
+                $(this).find("input.department-input").val(department);
+                $(this).find("input.section-input").val(section);
+                $(this).find("input.join-date-input").val(joinDate);
+            });
+
+            $('#remove-staff-button').click(function () {
+                var employNo = $('#remove-staff-modal').find('input.employ-no-input').val();
+                var leaveDate = $('#leave-date').val();
+
+                if (0 == leaveDate) {
+                    setAlertText('Filling in leave date is mandatory.');
+                    $('#alert-modal').modal('show');
+                    return;
+                }
+
+                $.ajax({
+                    headers: headers,
+                    url: "{{ route('StaffRemove') }}",
+                    data: {
+                        employno: employNo,
+                        leavedate: leaveDate
+                    },
+                    type: 'POST',
+                    success: function (data) {
+                        $("tr.staff-entry[data-employ-no='"+employNo+"']").hide();
+                    }
+                });
+            });
 
             var toBeUpdatedStaff = [];
             var tobeAddedStaff = [];

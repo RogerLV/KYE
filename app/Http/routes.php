@@ -25,4 +25,5 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('staff/list', 'StaffController@listAll')->name('StaffList');
     Route::post('staff/upload', 'StaffController@receiveStaffList')->name('StaffUpload');
     Route::post('staff/confirm', 'StaffController@confirmStaffList')->name('StaffConfirm');
+    Route::post('staff/remove', 'StaffController@remove')->name('StaffRemove');
 });

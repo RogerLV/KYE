@@ -21,6 +21,8 @@
         locale file as mentioned below -->
     <script src="{{ ASSET_DIR.'file-input/js/locales/zh.js' }}" type="text/javascript"></script>
 
+    @yield('head')
+
     <title>{{ $title or 'Know Your Employee' }}</title>
 </head>
 
@@ -55,7 +57,6 @@
 
     div.required > label:after {
         content: '*';
-        /*font-size: 150%;*/
         color: red;
     }
 </style>

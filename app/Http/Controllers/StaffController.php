@@ -135,6 +135,22 @@ class StaffController extends Controller
         return response()->json(['status' => 'good']);
     }
 
+    public function remove()
+    {
+        if (!$this->editable()) {
+            throw new AppException('STFCTRL006', ERROR_MESSAGE_NOT_AUTHORIZED);
+        }
+
+        $paras = $this->checkParameters(['employno', 'leavedate']);
+
+
+
+        Staff::deleteIns($paras['employno'], $paras['leavedate']);
+
+        return response()->json(['status' => 'good']);
+    }
+
+
     private function editable()
     {
         return $this->loginUser->roleID == ROLE_ID_MAKER;
