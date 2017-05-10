@@ -36,7 +36,7 @@ class Controller extends BaseController
         return true;
     }
 
-    protected function checkParameters($paras)
+    protected function checkParameters($paras, $optionalParas = [])
     {
         $paras = is_array($paras) ? $paras : [$paras];
 
@@ -47,6 +47,11 @@ class Controller extends BaseController
                 throw new AppException('CTR002', ERROR_MESSAGE_DATA_ERROR);
             }
 
+            $rtn[$para] = request()->input($para);
+        }
+
+        $paras = is_array($optionalParas) ? $optionalParas : [$optionalParas];
+        foreach ($paras as $para) {
             $rtn[$para] = request()->input($para);
         }
 
