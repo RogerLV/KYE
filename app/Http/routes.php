@@ -22,9 +22,10 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('role/add', 'RoleController@add')->name('RoleAdd');
 
     Route::get('staff/list/{dept?}', 'StaffController@listAll')->name('StaffList');
-    Route::post('staff/upload', 'StaffController@receiveStaffList')->name('StaffUpload');
-    Route::post('staff/confirm', 'StaffController@confirmStaffList')->name('StaffConfirm');
     Route::post('staff/remove', 'StaffController@remove')->name('StaffRemove');
     Route::post('staff/edit', 'StaffController@edit')->name('StaffEdit');
     Route::post('staff/add', 'StaffController@add')->name('StaffAdd');
+
+    Route::post('staff/upload', 'StaffBatchController@receiveStaffList')->name('StaffUpload');
+    Route::post('staff/confirm', 'StaffBatchController@confirmStaffList')->name('StaffConfirm');
 });
