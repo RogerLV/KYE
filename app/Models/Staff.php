@@ -20,6 +20,11 @@ class Staff extends Model
         return $query->whereNull('leaveDate');
     }
 
+    public function scopeEx($query)
+    {
+        return $query->whereNotNull('leaveDate');
+    }
+
     public static function updateIns($staffInfo)
     {
         $staffIns = self::getIns($staffInfo['employNo']);

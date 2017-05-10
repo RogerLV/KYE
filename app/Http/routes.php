@@ -28,4 +28,6 @@ Route::group(['middleware' => ['web']], function () {
 
     Route::post('staff/upload', 'StaffBatchController@receiveStaffList')->name('StaffUpload');
     Route::post('staff/confirm', 'StaffBatchController@confirmStaffList')->name('StaffConfirm');
+
+    Route::get('staff/view/ex/{dept?}', 'ExStaffController@listAll')->name('StaffViewEx');
 });

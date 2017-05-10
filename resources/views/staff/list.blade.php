@@ -23,7 +23,10 @@
     <select class="form-control" id="select-dept">
         <option selected value="all">Show all</option>
         @foreach($deptOptions as $deptOption)
-            <option value="{{ $deptOption->department }}">{{ $deptOption->department }}</option>
+            <option value="{{ $deptOption->department }}" 
+                    {{ $selectedDept == $deptOption->department ? "selected" : "" }}>
+                {{ $deptOption->department }}
+            </option>
         @endforeach
     </select>
     <br>
@@ -74,6 +77,12 @@
     </table>
 
     {{ $staff->links() }}
+
+    <h6>
+        <a href="{{ route('StaffViewEx') }}" target="_blank">
+            <u>View Ex-Staff</u>
+        </a>
+    </h6>
 
     @if($editable)
 

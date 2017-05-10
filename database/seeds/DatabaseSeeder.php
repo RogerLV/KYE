@@ -114,6 +114,14 @@ class DatabaseSeeder extends Seeder
                 'KYECaseController',
                 'check',
             ],
+            [
+                'StaffViewEx',
+                'View Ex-Staff',
+                false,
+                null,
+                'ExStaffController',
+                'listAll',
+            ],
         ];
 
         foreach ($pages as $pageInfo) {
@@ -131,6 +139,7 @@ class DatabaseSeeder extends Seeder
         $pageControl = [
             1 => [1, 2, 3, 4],
             3 => [1, 2, 3, 4],
+            10 => [1, 2, 3, 4],
         ];
 
         foreach ($pageControl as $pageID => $roleIDs) {
