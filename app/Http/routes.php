@@ -2,7 +2,8 @@
 
 Route::get('test', function () {
     // throw new App\Exceptions\AppException('ASMK001', 'Data Error.');
-    echo ASSET_DIR.'file-input/css/fileinput.min.css';
+    // echo ASSET_DIR.'file-input/css/fileinput.min.css';
+    dd(is_int('123'));
 });
 
 Route::get('dummyEntry', function () {
@@ -27,4 +28,5 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('staff/confirm', 'StaffController@confirmStaffList')->name('StaffConfirm');
     Route::post('staff/remove', 'StaffController@remove')->name('StaffRemove');
     Route::post('staff/edit', 'StaffController@edit')->name('StaffEdit');
+    Route::post('staff/add', 'StaffController@add')->name('StaffAdd');
 });

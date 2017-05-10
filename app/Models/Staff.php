@@ -37,7 +37,7 @@ class Staff extends Model
     public static function insertIns($staffInfo)
     {
         if (self::exists($staffInfo['employNo'])) {
-            throw new AppException('STFMODEL001', 'Staff '.$staffInfo['employNo'].' Already Exists.');
+            throw new \App\Exceptions\AppException('STFMODEL001', 'Staff '.$staffInfo['employNo'].' Already Exists.');
         }
 
         // add Staff
@@ -46,6 +46,8 @@ class Staff extends Model
         $staffIns->save();
 
         StaffOperationLog::logInsert($staffIns);
+
+        return $staffIns;
     }
 
     public static function deleteIns($employNo, $leaveDate)
@@ -65,7 +67,7 @@ class Staff extends Model
         $staffIns = self::where('employNo', $employNo)->first();
 
         if (is_null($staffIns)) {
-            throw new AppException('STFMODEL001', 'Staff '.$employNo.' does not exist.');
+            throw new \App\Exceptions\AppException('STFMODEL001', 'Staff '.$employNo.' does not exist.');
         }
 
         return $staffIns;

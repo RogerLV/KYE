@@ -154,7 +154,7 @@ class StaffController extends Controller
             throw new AppException('STFCTRL007', ERROR_MESSAGE_NOT_AUTHORIZED);
         }
 
-        $paras = $this->checkParameters(['employno', 'name', 'department', 'section'], ['joindate']);
+        $paras = $this->checkParameters(['employno', 'name', 'department', 'section', 'joindate']);
 
         $staffIns = Staff::getIns($paras['employno']);
 
@@ -175,6 +175,35 @@ class StaffController extends Controller
             'joinDate' => $paras['joindate'],
         ]);
 
+        return response()->json([
+            'status' => 'good',
+            'instance' => $staffIns,
+        ]);
+    }
+
+    public function add()
+    {
+        if (!$this->editable()) {
+            throw new AppException('STFCTRL009', ERROR_MESSAGE_NOT_AUTHORIZED);
+        }
+
+        $paras = $this->checkParameters(['employno', 'name', 'department', 'section', 'joindate']);
+
+        // employ no has to be integer
+        if (!is_numeric($paras['employno'])) {
+            throw new AppException('STFCTRL010', 'Employ No has to be integer.');
+        }
+
+        // add Ins
+        $staffIns = Staff::insertIns([
+            'employNo' => $paras['employno'],
+            'department' => $paras['department'],
+            'uEngName' => $paras['name'],
+            'section' => $paras['section'],
+            'joinDate' => $paras['joindate'],
+        ]);
+
+        // return Ins
         return response()->json([
             'status' => 'good',
             'instance' => $staffIns,
