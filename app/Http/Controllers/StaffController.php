@@ -7,14 +7,20 @@ use App\Models\Staff;
 
 class StaffController extends Controller
 {
-    public function listAll()
+    public function listAll($dept = 'all')
     {
         $this->pageAccessible(__CLASS__, __FUNCTION__);
+
+        if ('all' == $dept) {
+            $staff = Staff::inService()->paginate(10);
+        } else {
+            $staff = Staff::inService()->where('department', $dept)->paginate(10);
+        }
 
         return view('staff.list')
                 ->with('title', 'Staff List')
                 ->with('editable', $this->editable())
-                ->with('staff', Staff::inService()->get())
+                ->with('staff', $staff)
                 ->with('deptOptions', Staff::select('department')->inService()->distinct()->get());
     }
 

@@ -1,9 +1,7 @@
 <?php
 
 Route::get('test', function () {
-    // throw new App\Exceptions\AppException('ASMK001', 'Data Error.');
-    // echo ASSET_DIR.'file-input/css/fileinput.min.css';
-    dd(is_int('123'));
+    dd(route('StaffList').'/');
 });
 
 Route::get('dummyEntry', function () {
@@ -23,7 +21,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('role/remove', 'RoleController@remove')->name('RoleRemove');
     Route::post('role/add', 'RoleController@add')->name('RoleAdd');
 
-    Route::get('staff/list', 'StaffController@listAll')->name('StaffList');
+    Route::get('staff/list/{dept?}', 'StaffController@listAll')->name('StaffList');
     Route::post('staff/upload', 'StaffController@receiveStaffList')->name('StaffUpload');
     Route::post('staff/confirm', 'StaffController@confirmStaffList')->name('StaffConfirm');
     Route::post('staff/remove', 'StaffController@remove')->name('StaffRemove');

@@ -166,6 +166,8 @@
         </tbody>
     </table>
 
+    {{ $staff->links() }}
+
     @if($editable)
         <div id="remove-staff-modal" class="modal fade">
             <div class="modal-dialog">
@@ -254,13 +256,7 @@
     $(document).ready(function () {
 
         $("#select-dept").change(function () {
-            var deptName = $(this).val();
-            if ('all' == deptName) {
-                $("tr.staff-entry").show();
-            } else {
-                $("tr.staff-entry").hide();
-                $("tr.staff-entry[data-dept='"+deptName+"']").show();
-            }
+            location.href = "{{ route('StaffList') }}"+'/'+$(this).val();
         });
 
         @if($editable)
