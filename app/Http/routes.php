@@ -1,7 +1,7 @@
 <?php
 
 Route::get('test', function () {
-    dd(route('StaffList').'/');
+
 });
 
 Route::get('dummyEntry', function () {
@@ -30,4 +30,10 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('staff/confirm', 'StaffBatchController@confirmStaffList')->name('StaffConfirm');
 
     Route::get('staff/view/ex/{dept?}', 'ExStaffController@listAll')->name('StaffViewEx');
+
+    Route::get('occupational/list', 'OccupationalRiskController@listAll')->name('OccupationalRiskList');
+    Route::get('occupational/maker', 'OccupationalRiskController@makerPage')->name('OccupationalRiskMaker');
+    Route::post('occupational/delete/pending', 'OccupationalRiskController@deletePending')->name('OccupationalRiskDeletePending');
+
+    Route::post('occupational/receive', 'OccupationalRiskBatchController@receive')->name('OccupationalBatchReceive');
 });

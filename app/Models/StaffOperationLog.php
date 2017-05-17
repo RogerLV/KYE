@@ -6,8 +6,6 @@ use APP\Logic\LoginUser\LoginUserKeeper;
 
 class StaffOperationLog extends OperationLog
 {
-    protected $tableName = 'Staff';
-
     public static function logInsert(Staff $staffIns)
     {
         $lanID = LoginUserKeeper::getUser()->lanID;
@@ -19,6 +17,7 @@ class StaffOperationLog extends OperationLog
         $log->to = $staffIns->toJson();
         $log->madeBy = $lanID;
         $log->checkedBy = $lanID;
+        $log->checkedResult = true;
 
         $log->save();
     }
@@ -35,6 +34,7 @@ class StaffOperationLog extends OperationLog
         $log->to = $staffIns->toJson();
         $log->madeBy = $lanID;
         $log->checkedBy = $lanID;
+        $log->checkedResult = true;
 
         $log->save();
     }
@@ -50,6 +50,7 @@ class StaffOperationLog extends OperationLog
         $log->from = $staffIns->toJson();
         $log->madeBy = $lanID;
         $log->checkedBy = $lanID;
+        $log->checkedResult = true;
 
         $log->save();
     }

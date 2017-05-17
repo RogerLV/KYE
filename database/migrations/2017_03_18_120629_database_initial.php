@@ -66,7 +66,8 @@ class DatabaseInitial extends Migration
         // occupational risk
         Schema::create('OccupationalRisk', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('sectionName', 100);
+            $table->string('department');
+            $table->string('section');
             $table->string('description', env('FIELD_MAX_LENGTH'))->nullable();
             $table->string('riskLevel', 20);
 
@@ -87,14 +88,16 @@ class DatabaseInitial extends Migration
         Schema::create('OperationLogs', function (Blueprint $table) {
             $table->increments('id');
             $table->string('tableName');
-            $table->string('tableID');
+            $table->string('tableID')->nullable();
             $table->string('type', 10);
             $table->string('from', env('FIELD_MAX_LENGTH'))->nullable();
             $table->string('to', env('FIELD_MAX_LENGTH'))->nullable();
             $table->string('madeBy', 20);
-            $table->string('checkedBy', 20);
+            $table->string('checkedBy', 20)->nullable();
+            $table->boolean('checkedResult')->nullable();
 
             $table->timestamps();
+            $table->softDeletes();
         });
 
         // parameters
