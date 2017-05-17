@@ -23,20 +23,9 @@ class OperationLog extends Model
     	return json_decode($value);
     }
 
-    public static function getIns($id)
-    {
-        $instance = self::find($id);
-
-        if (is_null($instance)) {
-            throw new AppException('OPRTNLOGMDL001', 'Incorrect Role Info.');
-        }
-
-        return $instance;
-    }
-
     public static function remove($id)
     {
-    	$ins = self::getIns($id);
+    	$ins = self::findOrFail($id);
     	$ins->delete();
     }
 }

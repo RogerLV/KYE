@@ -134,7 +134,7 @@
             handleReturn(data.response);
         });
 
-        $('.removing-pending').click(function () {
+        $('button.removing-pending').click(function () {
             var button = $(this);
             $.ajax({
                 headers: headers,

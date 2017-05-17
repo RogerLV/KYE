@@ -16,12 +16,12 @@ class User extends Model
 
     public static function getIns($lanID)
     {
-    	$ins = self::where('lanID', $lanID)->first();
+        $ins = self::where('lanID', $lanID)->first();
 
-    	if (is_null($ins)) {
-    		throw new \App\Exceptions\AppException('USERMODEL001', 'Incorrect User Info.');
-    	}
+        if (is_null($ins)) {
+            throw new \App\Exceptions\AppException('USERMODEL001', 'Incorrect User Info.');
+        }
 
-    	return $ins;
+        return $ins;
     }
 }

@@ -130,6 +130,14 @@ class DatabaseSeeder extends Seeder
                 'OccupationalRiskController',
                 'makerPage',
             ],
+            [
+                'OccupationalRiskChecker',
+                'Occupational Risk Checker Approve Page',
+                false,
+                null,
+                'OccupationalRiskController',
+                'checkerPage',
+            ],
         ];
 
         foreach ($pages as $pageInfo) {
@@ -150,6 +158,7 @@ class DatabaseSeeder extends Seeder
             3 => [1, 2, 3, 4],
             10 => [1, 2, 3, 4],
             11 => [1],
+            12 => [2],
         ];
 
         foreach ($pageControl as $pageID => $roleIDs) {

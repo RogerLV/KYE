@@ -65,20 +65,9 @@ class UserRole extends Model
         return !is_null($roleIns) && $roleIns->active;
     }
 
-    public static function getIns($mapID)
-    {
-        $instance = self::find($mapID);
-
-        if (is_null($instance)) {
-            throw new AppException('USERROLEMODEL003', 'Incorrect Role Info.');
-        }
-
-        return $instance;
-    }
-
     public static function removeIns($mapID)
     {
-        $instance = self::getIns($mapID);
+        $instance = self::findOrFail($mapID);
         UpdateLog::logDelete($instance);
         $instance->delete();
     }

@@ -57,4 +57,30 @@ class OccupationalRiskBatchController extends OccupationalRiskController
 
         return response()->json(['status' => 'good']);
     }
+
+    public function approveAll()
+    {
+        if (!$this->canCheck()) {
+            throw new AppException('OCPRSKBAH005', ERROR_MESSAGE_NOT_AUTHORIZED);
+        }
+
+        foreach (OccupationalRiskOperationLog::getAllPendings() as $entry) {
+            OccupationalRiskOperationLog::checkApprove($entry->id);
+        }
+
+        return response()->json(['status' => 'good']);
+    }
+
+    public function rejectAll()
+    {
+        if (!$this->canCheck()) {
+            throw new AppException('OCPRSKBAH006', ERROR_MESSAGE_NOT_AUTHORIZED);
+        }
+
+        foreach (OccupationalRiskOperationLog::getAllPendings() as $entry) {
+            OccupationalRiskOperationLog::checkReject($entry->id);
+        }
+
+        return response()->json(['status' => 'good']);
+    }
 }

@@ -33,7 +33,12 @@ Route::group(['middleware' => ['web']], function () {
 
     Route::get('occupational/list', 'OccupationalRiskController@listAll')->name('OccupationalRiskList');
     Route::get('occupational/maker', 'OccupationalRiskController@makerPage')->name('OccupationalRiskMaker');
+    Route::get('occupational/checker', 'OccupationalRiskController@checkerPage')->name('OccupationalRiskChecker');
+    Route::post('occupational/checker/approve', 'OccupationalRiskController@checkerApprove')->name('OccupationalRiskCheckerApprove');
+    Route::post('occupational/checker/reject', 'OccupationalRiskController@checkerReject')->name('OccupationalRiskCheckerReject');
     Route::post('occupational/delete/pending', 'OccupationalRiskController@deletePending')->name('OccupationalRiskDeletePending');
 
     Route::post('occupational/receive', 'OccupationalRiskBatchController@receive')->name('OccupationalBatchReceive');
+    Route::post('occupational/approve/all', 'OccupationalRiskBatchController@approveAll')->name('OccupationalApproveAll');
+    Route::post('occupational/reject/all', 'OccupationalRiskBatchController@rejectAll')->name('OccupationalRejectAll');
 });
