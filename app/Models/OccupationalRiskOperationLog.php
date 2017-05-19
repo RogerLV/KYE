@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Logic\LoginUser\LoginUserKeeper;
+use App\Exceptions\AppException;
 
 class OccupationalRiskOperationLog extends OperationLog
 {
@@ -27,24 +28,36 @@ class OccupationalRiskOperationLog extends OperationLog
             }
         }
 
-        if (!empty($updateInfo)) {
-            $log = new OperationLog();
-
-            $log->tableName = 'OccupationalRisk';
-            $log->type = 'update';
-            $log->from = $occupationalRiskIns->toJson();
-            $log->to = json_encode($updateInfo);
-            $log->madeBy = LoginUserKeeper::getUser()->lanID;
-
-            $log->save();
+        if (empty($updateInfo)) {
+            return;
         }
+
+        if (self::entryIsPending($occupationalRiskIns->id)) {
+            throw new AppException('OCPTNRSKOPRTNLOGMDL001', ERROR_MESSAGE_ENTRY_IS_PENDING);
+        }
+
+        $log = new OperationLog();
+
+        $log->tableName = 'OccupationalRisk';
+        $log->tableID = $occupationalRiskIns->id;
+        $log->type = 'update';
+        $log->from = $occupationalRiskIns->toJson();
+        $log->to = json_encode($updateInfo);
+        $log->madeBy = LoginUserKeeper::getUser()->lanID;
+
+        $log->save();
     }
 
     public static function logRemove(OccupationalRisk $occupationalRiskIns)
     {
+        if (self::entryIsPending($occupationalRiskIns->id)) {
+            throw new AppException('OCPTNRSKOPRTNLOGMDL002', ERROR_MESSAGE_ENTRY_IS_PENDING);
+        }
+        
         $log = new OperationLog();
 
         $log->tableName = 'OccupationalRisk';
+        $log->tableID = $occupationalRiskIns->id;
         $log->type = 'remove';
         $log->from = $occupationalRiskIns->toJson();
         $log->madeBy = LoginUserKeeper::getUser()->lanID;
@@ -65,7 +78,7 @@ class OccupationalRiskOperationLog extends OperationLog
                 OccupationalRisk::updateIns($log->from->id, $log->to);
                 break;
 
-            case 'delete':
+            case 'remove':
                 OccupationalRisk::deleteIns($log->from->id);
                 break;
         }
@@ -99,5 +112,17 @@ class OccupationalRiskOperationLog extends OperationLog
             'pendingUpdate' => $pendings->where('type', 'update'),
             'pendingRemove' => $pendings->where('type', 'remove'),
         ];
+    }
+
+    protected static function entryIsPending($occupationalRiskID)
+    {
+        $existing = self::where([
+            ['tableName', '=', 'OccupationalRisk'],
+            ['tableID', '=', $occupationalRiskID],
+        ])->whereNull('checkedBy')
+        ->whereNull('checkedResult')
+        ->first();
+
+        return !is_null($existing);
     }
 }

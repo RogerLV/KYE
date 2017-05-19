@@ -60,13 +60,23 @@
             @foreach($pendingUpdate as $entry)
                 <tr>
                     <td>{{ $i++ }}</td>
-                    <td>{{ $entry->to->department }}</td>
-                    <td>{{ $entry->to->section }}</td>
+
+                    @if(isset($entry->to->department))
+                        <td bgcolor="pink">{{ $entry->to->department }}</td>
+                    @else
+                        <td>{{ $entry->from->department }}</td>
+                    @endif
+
+                    @if(isset($entry->to->section))
+                        <td bgcolor="pink">{{ $entry->to->section }}</td>
+                    @else
+                        <td>{{ $entry->from->section }}</td>
+                    @endif
 
                     @if(isset($entry->to->description))
-                        <td bgcolor="pink">{! nl2br($entry->to->description) !}</td>
+                        <td bgcolor="pink">{!! nl2br($entry->to->description) !!}</td>
                     @else
-                        <td>{! nl2br($entry->from->description) !}</td>
+                        <td>{!! nl2br($entry->from->description) !!}</td>
                     @endif
 
                     @if(isset($entry->to->riskLevel))
@@ -106,7 +116,7 @@
                     <td>{{ $i++ }}</td>
                     <td>{{ $entry->from->department }}</td>
                     <td>{{ $entry->from->section }}</td>
-                    <td>{! $entry->from->description !}</td>
+                    <td>{!! nl2br($entry->from->description) !!}</td>
                     <td>{{ $entry->from->riskLevel }}</td>
                     <td>
                         <button class="btn btn-danger btn-xs removing-pending" data-pending-id="{{ $entry->id }}">

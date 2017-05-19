@@ -31,12 +31,15 @@ Route::group(['middleware' => ['web']], function () {
 
     Route::get('staff/view/ex/{dept?}', 'ExStaffController@listAll')->name('StaffViewEx');
 
-    Route::get('occupational/list', 'OccupationalRiskController@listAll')->name('OccupationalRiskList');
+    Route::get('occupational/list/{dept?}', 'OccupationalRiskController@listAll')->name('OccupationalRiskList');
     Route::get('occupational/maker', 'OccupationalRiskController@makerPage')->name('OccupationalRiskMaker');
     Route::get('occupational/checker', 'OccupationalRiskController@checkerPage')->name('OccupationalRiskChecker');
     Route::post('occupational/checker/approve', 'OccupationalRiskController@checkerApprove')->name('OccupationalRiskCheckerApprove');
     Route::post('occupational/checker/reject', 'OccupationalRiskController@checkerReject')->name('OccupationalRiskCheckerReject');
     Route::post('occupational/delete/pending', 'OccupationalRiskController@deletePending')->name('OccupationalRiskDeletePending');
+    Route::post('occupational/add', 'OccupationalRiskController@add')->name('OccupationalRiskAdd');
+    Route::post('occupational/delete', 'OccupationalRiskController@delete')->name('OccupationalRiskDelete');
+    Route::post('occupational/edit', 'OccupationalRiskController@edit')->name('OccupationalRiskEdit');
 
     Route::post('occupational/receive', 'OccupationalRiskBatchController@receive')->name('OccupationalBatchReceive');
     Route::post('occupational/approve/all', 'OccupationalRiskBatchController@approveAll')->name('OccupationalApproveAll');

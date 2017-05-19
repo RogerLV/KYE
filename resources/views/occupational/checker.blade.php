@@ -61,13 +61,23 @@
             @foreach($pendingUpdate as $entry)
                 <tr data-pending-id="{{ $entry->id }}" class="pending-entry">
                     <td>{{ $i++ }}</td>
-                    <td>{{ $entry->to->department }}</td>
-                    <td>{{ $entry->to->section }}</td>
+
+                    @if(isset($entry->to->department))
+                        <td bgcolor="pink">{{ $entry->to->department }}</td>
+                    @else
+                        <td>{{ $entry->from->department }}</td>
+                    @endif
+
+                    @if(isset($entry->to->section))
+                        <td bgcolor="pink">{{ $entry->to->section }}</td>
+                    @else
+                        <td>{{ $entry->from->section }}</td>
+                    @endif
 
                     @if(isset($entry->to->description))
-                        <td bgcolor="pink">{! nl2br($entry->to->description) !}</td>
+                        <td bgcolor="pink">{!! nl2br($entry->to->description) !!}</td>
                     @else
-                        <td>{! nl2br($entry->from->description) !}</td>
+                        <td>{!! nl2br($entry->from->description) !!}</td>
                     @endif
 
                     @if(isset($entry->to->riskLevel))
@@ -113,7 +123,7 @@
                     <td>{{ $i++ }}</td>
                     <td>{{ $entry->from->department }}</td>
                     <td>{{ $entry->from->section }}</td>
-                    <td>{! $entry->from->description !}</td>
+                    <td>{!! nl2br($entry->from->description) !!}</td>
                     <td>{{ $entry->from->riskLevel }}</td>
                     <td>
                         <button class="btn btn-primary btn-xs approve-pending">
@@ -131,21 +141,23 @@
     </table>
     <br>
 
-    <div class="col-md-12">
-        <div class="col-md-2"></div>
-        <div class="col-md-3">
-            <button class="btn btn-primary btn-lg" id="approve-all">
-                Approve All
-            </button>
+    @if($pendingAdd->count() !=0 || $pendingUpdate->count()!=0 || $pendingRemove->count() != 0)
+        <div class="col-md-12">
+            <div class="col-md-2"></div>
+            <div class="col-md-3">
+                <button class="btn btn-primary btn-lg" id="approve-all">
+                    Approve All
+                </button>
+            </div>
+            <div class="col-md-2"></div>
+            <div class="col-md-3">
+                <button class="btn btn-danger btn-lg" id="reject-all">
+                    Reject All
+                </button>
+            </div>
+            <div class="col-md-2"></div>
         </div>
-        <div class="col-md-2"></div>
-        <div class="col-md-3">
-            <button class="btn btn-danger btn-lg" id="reject-all">
-                Reject All
-            </button>
-        </div>
-        <div class="col-md-2"></div>
-    </div>
+    @endif
 @endsection
 
 

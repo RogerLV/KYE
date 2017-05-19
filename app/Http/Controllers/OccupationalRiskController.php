@@ -2,16 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\OccupationalRisk;
 use App\Models\OccupationalRiskOperationLog;
 use App\Exceptions\AppException;
 
 class OccupationalRiskController extends Controller
 {
-    public function listAll()
+    public function listAll($dept = 'all')
     {
         $this->pageAccessible(__CLASS__, __FUNCTION__);
 
-        return view('occupational.list');
+        if ('all' == $dept) {
+            $entries = OccupationalRisk::all();
+        } else {
+            $entries = OccupationalRisk::where('department', $dept)->get();
+        }
+
+        return view('occupational.list')
+                ->with('entries', $entries)
+                ->with('editable', $this->editable())
+                ->with('canCheck', $this->canCheck())
+                ->with('title', 'Occupational Risk List')
+                ->with('deptOptions', \App\Models\OccupationalRisk::select('department')->distinct()->get())
+                ->with('selectedDept', $dept);
     }
 
     public function makerPage()
@@ -66,6 +79,59 @@ class OccupationalRiskController extends Controller
 
         OccupationalRiskOperationLog::checkReject($paras['pendingid']);
 
+        return response()->json(['status' => 'good']);
+    }
+
+    public function add()
+    {
+        if (!$this->editable()) {
+            throw new AppException('OCPTNRSKCTL004', ERROR_MESSAGE_NOT_AUTHORIZED);
+        }
+
+        $paras = $this->checkParameters(['department', 'section', 'risklevel'], ['description']);
+
+        OccupationalRiskOperationLog::logInsert([
+            'department' => $paras['department'],
+            'section' => $paras['section'],
+            'description' => $paras['description'],
+            'riskLevel' => $paras['risklevel'],
+        ]);
+
+        return response()->json(['status' => 'good']);
+    }
+
+    public function delete()
+    {
+        if (!$this->editable()) {
+            throw new AppException('OCPTNRSKCTL005', ERROR_MESSAGE_NOT_AUTHORIZED);
+        }
+
+        $paras = $this->checkParameters('entryid');
+
+        $occupationalRiskIns = OccupationalRisk::findOrFail($paras['entryid']);
+
+        OccupationalRiskOperationLog::logRemove($occupationalRiskIns);
+
+        return response()->json(['status' => 'good']);
+    }
+
+    public function edit()
+    {
+        if (!$this->editable()) {
+            throw new AppException('OCPTNRSKCTL005', ERROR_MESSAGE_NOT_AUTHORIZED);
+        }
+
+        $paras = $this->checkParameters(['entryid', 'department', 'section', 'risklevel'], ['description']);
+
+        $occupationalRiskIns = OccupationalRisk::findOrFail($paras['entryid']);
+
+        OccupationalRiskOperationLog::logUpdate($occupationalRiskIns, [
+            'department' => $paras['department'],
+            'section' => $paras['section'],
+            'description' => $paras['description'],
+            'riskLevel' => $paras['risklevel'],
+        ]);
+        
         return response()->json(['status' => 'good']);
     }
 
