@@ -22,6 +22,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('role/add', 'RoleController@add')->name('RoleAdd');
 
     Route::get('staff/list/{dept?}', 'StaffController@listAll')->name('StaffList');
+    Route::get('staff/info/{empNo}', 'StaffController@view')->name('StaffInfo');
     Route::post('staff/remove', 'StaffController@remove')->name('StaffRemove');
     Route::post('staff/edit', 'StaffController@edit')->name('StaffEdit');
     Route::post('staff/add', 'StaffController@add')->name('StaffAdd');
@@ -44,4 +45,6 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('occupational/receive', 'OccupationalRiskBatchController@receive')->name('OccupationalBatchReceive');
     Route::post('occupational/approve/all', 'OccupationalRiskBatchController@approveAll')->name('OccupationalApproveAll');
     Route::post('occupational/reject/all', 'OccupationalRiskBatchController@rejectAll')->name('OccupationalRejectAll');
+
+    Route::get('kye/case/create', 'KYECaseController@create')->name('KYECaseCreate');
 });

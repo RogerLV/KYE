@@ -100,6 +100,16 @@ class StaffController extends Controller
         ]);
     }
 
+    public function view($empNo)
+    {
+        $pageIns = $this->pageAccessible(__CLASS__, __FUNCTION__);
+
+        return view('staff.view')
+                ->with('title', $pageIns->title)
+                ->with('staff', Staff::getIns($empNo))
+                ->with('editable', $this->editable());
+    }
+
 
     protected function editable()
     {

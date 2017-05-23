@@ -52,7 +52,11 @@
                 <tr class="staff-entry" data-dept="{{ $staffEntry->department }}" 
                     data-employ-no="{{ $staffEntry->employNo }}">
                     <td>{{ $i++ }}</td>
-                    <td class="employ-no">{{ $staffEntry->employNo }}</td>
+                    <td class="employ-no">
+                        <a href="{{ route('StaffInfo', ['empNo' => $staffEntry->employNo]) }}" target="_blank">
+                            {{ $staffEntry->employNo }}
+                        </a>
+                    </td>
                     <td class="employ-name">{{ $staffEntry->uEngName }}</td>
                     <td class="department">{{ $staffEntry->department }}</td>
                     <td class="section">{{ $staffEntry->section }}</td>

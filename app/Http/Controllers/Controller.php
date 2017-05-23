@@ -33,7 +33,7 @@ class Controller extends BaseController
             throw new AppException('CTR001', ERROR_MESSAGE_NOT_AUTHORIZED);
         }
 
-        return true;
+        return $accessible->first();
     }
 
     protected function checkParameters($paras, $optionalParas = [])
