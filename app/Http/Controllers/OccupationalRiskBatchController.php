@@ -65,7 +65,7 @@ class OccupationalRiskBatchController extends OccupationalRiskController
         }
 
         foreach (OccupationalRiskOperationLog::getAllPendings() as $entry) {
-            OccupationalRiskOperationLog::checkApprove($entry->id);
+            OccupationalRiskOperationLog::checkApprove($entry->id, true);
         }
 
         return response()->json(['status' => 'good']);
@@ -78,7 +78,7 @@ class OccupationalRiskBatchController extends OccupationalRiskController
         }
 
         foreach (OccupationalRiskOperationLog::getAllPendings() as $entry) {
-            OccupationalRiskOperationLog::checkReject($entry->id);
+            OccupationalRiskOperationLog::checkReject($entry->id, true);
         }
 
         return response()->json(['status' => 'good']);

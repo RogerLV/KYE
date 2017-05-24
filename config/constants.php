@@ -16,4 +16,5 @@ define('ROLE_ID_MAKER', 1);
 define('ERROR_MESSAGE_NOT_AUTHORIZED', 'You are not authorized to view the page.');
 define('ERROR_MESSAGE_DATA_ERROR', 'Data Error.');
 define('ERROR_MESSAGE_ENTRY_IS_PENDING', 'Operation failed! The entry already has operation pending to check. Please edit after confirmation.');
+define('ERROR_MESSAGE_MAKER_CHECKER_SHOULD_BE_DIFFERENT', 'You cannot confirm your own operations.');
 

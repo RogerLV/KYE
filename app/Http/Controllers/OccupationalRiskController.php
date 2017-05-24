@@ -40,7 +40,8 @@ class OccupationalRiskController extends Controller
         $this->pageAccessible(__CLASS__, __FUNCTION__);
 
         return view('occupational.checker', OccupationalRiskOperationLog::listAllTypePendings())
-                ->with('title', 'Occupational Risk Checker Page');
+                ->with('title', 'Occupational Risk Checker Page')
+                ->with('checkerLanID', \App\Logic\LoginUser\LoginUserKeeper::getUser()->lanID);
     }
 
     public function deletePending()
@@ -64,7 +65,7 @@ class OccupationalRiskController extends Controller
 
         $paras = $this->checkParameters('pendingid');
 
-        OccupationalRiskOperationLog::checkApprove($paras['pendingid']);
+        OccupationalRiskOperationLog::checkApprove($paras['pendingid'], false);
 
         return response()->json(['status' => 'good']);
     }
@@ -77,7 +78,7 @@ class OccupationalRiskController extends Controller
 
         $paras = $this->checkParameters('pendingid');
 
-        OccupationalRiskOperationLog::checkReject($paras['pendingid']);
+        OccupationalRiskOperationLog::checkReject($paras['pendingid'], false);
 
         return response()->json(['status' => 'good']);
     }

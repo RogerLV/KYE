@@ -28,4 +28,9 @@ class OperationLog extends Model
     	$ins = self::findOrFail($id);
     	$ins->delete();
     }
+
+    protected static function canCheck(OperationLog $logIns)
+    {
+        return \App\Logic\LoginUser\LoginUserKeeper::getUser()->lanID != $logIns->madeBy;
+    }
 }

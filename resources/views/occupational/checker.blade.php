@@ -27,12 +27,14 @@
                     <td>{!! nl2br($entry->to->description) !!}</td>
                     <td>{{ $entry->to->riskLevel }}</td>
                     <td>
-                        <button class="btn btn-primary btn-xs approve-pending">
+                        <button class="btn btn-primary btn-xs approve-pending" 
+                                <?php if($checkerLanID == $entry->madeBy) echo 'disabled'?>>
                             <span class="glyphicon glyphicon-ok"></span>
                         </button>
                     </td>
                     <td>
-                        <button class="btn btn-danger btn-xs removing-pending">
+                        <button class="btn btn-danger btn-xs removing-pending"
+                                <?php if($checkerLanID == $entry->madeBy) echo 'disabled'?>>
                             <span class="glyphicon glyphicon-remove"></span>
                         </button>
                     </td>
@@ -87,12 +89,14 @@
                     @endif
 
                     <td>
-                        <button class="btn btn-primary btn-xs approve-pending">
+                        <button class="btn btn-primary btn-xs approve-pending"
+                                <?php if($checkerLanID == $entry->madeBy) echo 'disabled'?>>
                             <span class="glyphicon glyphicon-ok"></span>
                         </button>
                     </td>
                     <td>
-                        <button class="btn btn-danger btn-xs removing-pending">
+                        <button class="btn btn-danger btn-xs removing-pending"
+                                <?php if($checkerLanID == $entry->madeBy) echo 'disabled'?>>
                             <span class="glyphicon glyphicon-remove"></span>
                         </button>
                     </td>
@@ -126,12 +130,14 @@
                     <td>{!! nl2br($entry->from->description) !!}</td>
                     <td>{{ $entry->from->riskLevel }}</td>
                     <td>
-                        <button class="btn btn-primary btn-xs approve-pending">
+                        <button class="btn btn-primary btn-xs approve-pending"
+                                <?php if($checkerLanID == $entry->madeBy) echo 'disabled'?>>
                             <span class="glyphicon glyphicon-ok"></span>
                         </button>
                     </td>
                     <td>
-                        <button class="btn btn-danger btn-xs removing-pending">
+                        <button class="btn btn-danger btn-xs removing-pending"
+                                <?php if($checkerLanID == $entry->madeBy) echo 'disabled'?>>
                             <span class="glyphicon glyphicon-remove"></span>
                         </button>
                     </td>
@@ -202,9 +208,7 @@
                 url: "{{ route('OccupationalApproveAll') }}",
                 type: 'post',
                 success: function(data) {
-                    handleReturn(data, function () {
-                        $('tr.pending-entry').hide();
-                    });
+                    handleReturn(data);
                 }
             });
         });
@@ -215,9 +219,7 @@
                 url: "{{ route('OccupationalRejectAll') }}",
                 type: 'post',
                 success: function(data) {
-                    handleReturn(data, function () {
-                        $('tr.pending-entry').hide();
-                    });
+                    handleReturn(data);
                 }
             });
         });

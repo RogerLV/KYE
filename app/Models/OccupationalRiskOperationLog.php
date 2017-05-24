@@ -65,9 +65,17 @@ class OccupationalRiskOperationLog extends OperationLog
         $log->save();
     }
 
-    public static function checkApprove($id)
+    public static function checkApprove($id, $skipException)
     {
         $log = self::findOrFail($id);
+
+        if (!self::canCheck($log)) {
+            if ($skipException) {
+                return false;
+            } else {
+                throw new AppException('OCPTNRSKOPRTNLOGMDL003', ERROR_MESSAGE_MAKER_CHECKER_SHOULD_BE_DIFFERENT);
+            }
+        }
 
         switch ($log->type) {
             case 'insert': 
@@ -88,9 +96,18 @@ class OccupationalRiskOperationLog extends OperationLog
         $log->save();
     }
 
-    public static function checkReject($id)
+    public static function checkReject($id, $skipException)
     {
         $log = self::findOrFail($id);
+
+        if (!self::canCheck($log)) {
+            if ($skipException) {
+                return false;
+            } else {
+                throw new AppException('OCPTNRSKOPRTNLOGMDL004', ERROR_MESSAGE_MAKER_CHECKER_SHOULD_BE_DIFFERENT);
+            }
+        }
+
         $log->checkedBy = LoginUserKeeper::getUser()->lanID;
         $log->checkedResult = false;
         $log->save();
