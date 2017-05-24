@@ -11,7 +11,7 @@ class OccupationalRiskOperationLog extends OperationLog
     {
         $log = new OperationLog();
 
-        $log->tableName = 'OccupationalRisk';
+        $log->tableName = 'OccupationalRisks';
         $log->type = 'insert';
         $log->to = json_encode($occupationalRiskInfo);
         $log->madeBy = LoginUserKeeper::getUser()->lanID;
@@ -38,7 +38,7 @@ class OccupationalRiskOperationLog extends OperationLog
 
         $log = new OperationLog();
 
-        $log->tableName = 'OccupationalRisk';
+        $log->tableName = 'OccupationalRisks';
         $log->tableID = $occupationalRiskIns->id;
         $log->type = 'update';
         $log->from = $occupationalRiskIns->toJson();
@@ -56,7 +56,7 @@ class OccupationalRiskOperationLog extends OperationLog
         
         $log = new OperationLog();
 
-        $log->tableName = 'OccupationalRisk';
+        $log->tableName = 'OccupationalRisks';
         $log->tableID = $occupationalRiskIns->id;
         $log->type = 'remove';
         $log->from = $occupationalRiskIns->toJson();
@@ -98,7 +98,7 @@ class OccupationalRiskOperationLog extends OperationLog
 
     public static function getAllPendings()
     {
-        return self::where('tableName', 'OccupationalRisk')
+        return self::where('tableName', 'OccupationalRisks')
                     ->whereNull('checkedBy')
                     ->get();
     }
@@ -117,7 +117,7 @@ class OccupationalRiskOperationLog extends OperationLog
     protected static function entryIsPending($occupationalRiskID)
     {
         $existing = self::where([
-            ['tableName', '=', 'OccupationalRisk'],
+            ['tableName', '=', 'OccupationalRisks'],
             ['tableID', '=', $occupationalRiskID],
         ])->whereNull('checkedBy')
         ->whereNull('checkedResult')

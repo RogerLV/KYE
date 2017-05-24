@@ -6,7 +6,12 @@
     <hr>
 
     <h4>{{ $staff->department }}-{{ $staff->section }}</h4>
-    <h4>OccupationalRisk: {{ $occupationalRisk->riskLevel or 'No Matching In Occupational Risk List. Please Modify Related Info before Proceeding!' }}</h4>
+
+    @if(!isset($occupationalRisk->riskLevel))
+        <h4>OccupationalRisk: <font color="red">No Matching In Occupational Risk List. Please Modify Related Info before Proceeding!</font></h4>
+    @else
+        <h4>OccupationalRisk: {{ $occupationalRisk->riskLevel }}</h4>
+    @endif
     <hr>
 
     <div class="form-group required">
@@ -52,7 +57,11 @@
         </select>
     </div>
 
-    <button class="btn btn-primary btn-block" id="submit-kye-case">
+    @if(!isset($occupationalRisk->riskLevel))
+        <button class="btn btn-primary btn-block" id="submit-kye-case" disabled>
+    @else
+        <button class="btn btn-primary btn-block" id="submit-kye-case">
+    @endif
         Submit
     </button>
     <br>
@@ -66,6 +75,47 @@
         $(document).ready(function () {
             $('input.file-input').fileinput({
                 showUpload: false
+            });
+
+            $('#submit-kye-case').click(function () {
+                // check empty
+                if (0 == $('#dow-jones-report')[0].files.length 
+                    || 0 == $('#questnet-report')[0].files.length
+                    || !$('#relationship-risk').val()
+                    || !$('#special-factor').val()
+                    || !$('#overall-rating').val()) {
+                    
+                    setAlertText("Please fill in all mandatory fields.");
+                    $('#alert-modal').modal('show');
+                }
+
+                // assemble form data
+                var form = new FormData();
+                form.append('_token', $("meta[name='csrf-token']").attr('content'))
+                form.append('staffid', '{{ $staff->id }}')
+                form.append('department', '{{ $staff->department }}')
+                form.append('section', '{{ $staff->section }}')
+                form.append('occupationalrisk', '{{ $occupationalRisk->riskLevel }}')
+                form.append('dowjonesreport', $('#dow-jones-report')[0].files[0])
+                form.append('questnetreport', $('#questnet-report')[0].files[0])
+                form.append('relationshiprisk', $('#relationship-risk').val())
+                form.append('specialfactor', $('#special-factor').val())
+                form.append('overallrating', $('#overall-rating').val());
+
+                if ($('#credit-bureau-report')[0].files.length) {
+                    form.append('creditbureaureport', $('#credit-bureau-report')[0].files[0]);
+                }
+
+                // send to server side
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', "{{ route('KYECaseMake') }}", true);
+                xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                xhr.onload = function () {
+                    var data = JSON.parse(xhr.response);
+                    handleReturn(data);
+                }
+
+                xhr.send(form)
             });
         });
     </script>

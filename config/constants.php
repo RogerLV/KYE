@@ -5,6 +5,7 @@ define('STORAGE_PATH', env('STORAGE_PATH'));
 
 define('STORAGE_PATH_STAFF_LIST', STORAGE_PATH.'StaffList');
 define('STORAGE_PATH_OCCUPATIONAL_RISK', STORAGE_PATH.'OccupationalRisk');
+define('STORAGE_PATH_KYE_CASE', STORAGE_PATH.'KYECase');
 
 define('ROLE_ID_SYS_ADMIN', 4);
 define('ROLE_ID_APP_ADMIN', 3);

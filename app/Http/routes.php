@@ -47,4 +47,5 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('occupational/reject/all', 'OccupationalRiskBatchController@rejectAll')->name('OccupationalRejectAll');
 
     Route::get('kye/case/create/{empNo}', 'KYECaseController@create')->name('KYECaseCreate');
+    Route::post('kye/case/make', 'KYECaseController@make')->name('KYECaseMake');
 });

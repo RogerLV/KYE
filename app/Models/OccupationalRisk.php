@@ -9,7 +9,7 @@ class OccupationalRisk extends Model
 {
     use SoftDeletes;
 
-    protected $table = 'OccupationalRisk';
+    protected $table = 'OccupationalRisks';
 
     public $timestamps = false;
 

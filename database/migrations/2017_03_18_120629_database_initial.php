@@ -64,7 +64,7 @@ class DatabaseInitial extends Migration
         });
 
         // occupational risk
-        Schema::create('OccupationalRisk', function (Blueprint $table) {
+        Schema::create('OccupationalRisks', function (Blueprint $table) {
             $table->increments('id');
             $table->string('department');
             $table->string('section');
@@ -84,7 +84,7 @@ class DatabaseInitial extends Migration
             $table->integer('QuestnetFileID');
             $table->integer('CreditBureauFileID')->nullable();
             $table->string('occupationalRisk', 10);
-            $table->string('RelationshipRisk', 10);
+            $table->string('relationshipRisk', 10);
             $table->string('specialFactors', 10);
             $table->string('overallRisk', 10);
 
@@ -97,7 +97,6 @@ class DatabaseInitial extends Migration
             $table->string('type', 20);
             $table->string('origName');
             $table->string('subAddr');
-            $table->string('tempName');
         });
 
         // operation log
@@ -141,7 +140,7 @@ class DatabaseInitial extends Migration
         Schema::drop('Roles');
         Schema::drop('Pages');
         Schema::drop('RolePages');
-        Schema::drop('OccupationalRisk');
+        Schema::drop('OccupationalRisks');
         Schema::drop('KYECases');
         Schema::drop('Documents');
         Schema::drop('OperationLogs');
