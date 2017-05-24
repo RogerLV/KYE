@@ -69,19 +69,35 @@ class DatabaseInitial extends Migration
             $table->string('department');
             $table->string('section');
             $table->string('description', env('FIELD_MAX_LENGTH'))->nullable();
-            $table->string('riskLevel', 20);
+            $table->string('riskLevel', 10);
 
             $table->softDeletes();
         });
 
-        // kye operation
-        Schema::create('KYEOperations', function (Blueprint $table) {
+        // kye case
+        Schema::create('KYECases', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('staffID');
-            $table->string('occupationalRisk', 20);
-            $table->string('RelationshipRisk', 20);
-            $table->string('specialFactors', 20);
-            $table->string('overallRisk', 20);
+            $table->string('department');
+            $table->string('section');
+            $table->integer('DowJonesFileID');
+            $table->integer('QuestnetFileID');
+            $table->integer('CreditBureauFileID')->nullable();
+            $table->string('occupationalRisk', 10);
+            $table->string('RelationshipRisk', 10);
+            $table->string('specialFactors', 10);
+            $table->string('overallRisk', 10);
+
+            $table->softDeletes();
+        });
+
+        // documents
+        Schema::create('Documents', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('type', 20);
+            $table->string('origName');
+            $table->string('subAddr');
+            $table->string('tempName');
         });
 
         // operation log
@@ -126,7 +142,8 @@ class DatabaseInitial extends Migration
         Schema::drop('Pages');
         Schema::drop('RolePages');
         Schema::drop('OccupationalRisk');
-        Schema::drop('KYEOperations');
+        Schema::drop('KYECases');
+        Schema::drop('Documents');
         Schema::drop('OperationLogs');
         Schema::drop('Parameters');
     }

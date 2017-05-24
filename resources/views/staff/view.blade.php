@@ -33,7 +33,8 @@
     <br>
 
     @if($editable)
-        <button class="btn btn-primary btn-block" onclick=window.open('{{ route('KYECaseCreate') }}')>
+        <button class="btn btn-primary btn-block" 
+                onclick=window.open('{{ route('KYECaseCreate', ['empNo' => $staff->employNo]) }}')>
             File One KYE Case
         </button>
     @endif

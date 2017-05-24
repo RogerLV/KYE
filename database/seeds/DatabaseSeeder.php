@@ -88,7 +88,7 @@ class DatabaseSeeder extends Seeder
                 false,
                 null,
                 'KYECaseController',
-                'new',
+                'create',
             ],
             [
                 'KYECaseView',
@@ -164,6 +164,7 @@ class DatabaseSeeder extends Seeder
             1 => [1, 2, 3, 4],
             2 => [1, 2, 3, 4],
             3 => [1, 2, 3, 4],
+            6 => [1],
             10 => [1, 2, 3, 4],
             11 => [1],
             12 => [2],

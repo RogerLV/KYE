@@ -55,7 +55,8 @@
         width: 22%;
     }
 
-    div.required > label:after {
+    div.required > label:after,
+    div.required > h4:after {
         content: '*';
         color: red;
     }
