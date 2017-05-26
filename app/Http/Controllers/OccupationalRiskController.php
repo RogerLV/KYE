@@ -41,7 +41,7 @@ class OccupationalRiskController extends Controller
 
         return view('occupational.checker', OccupationalRiskOperationLog::listAllTypePendings())
                 ->with('title', 'Occupational Risk Checker Page')
-                ->with('checkerLanID', \App\Logic\LoginUser\LoginUserKeeper::getUser()->lanID);
+                ->with('checkerLanID', $this->loginUser->lanID);
     }
 
     public function deletePending()

@@ -18,4 +18,11 @@ class KYECaseOperationLog extends OperationLog
 
         $log->save();
     }
+
+    public static function getAllPendings()
+    {
+        return self::where('tableName', 'KYECases')
+                    ->whereNull('checkedBy')
+                    ->get();
+    }
 }

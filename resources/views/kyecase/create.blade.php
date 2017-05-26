@@ -91,15 +91,13 @@
 
                 // assemble form data
                 var form = new FormData();
-                form.append('_token', $("meta[name='csrf-token']").attr('content'))
-                form.append('staffid', '{{ $staff->id }}')
-                form.append('department', '{{ $staff->department }}')
-                form.append('section', '{{ $staff->section }}')
-                form.append('occupationalrisk', '{{ $occupationalRisk->riskLevel }}')
-                form.append('dowjonesreport', $('#dow-jones-report')[0].files[0])
-                form.append('questnetreport', $('#questnet-report')[0].files[0])
-                form.append('relationshiprisk', $('#relationship-risk').val())
-                form.append('specialfactor', $('#special-factor').val())
+                form.append('_token', $("meta[name='csrf-token']").attr('content'));
+                form.append('employno', '{{ $staff->employNo }}');
+                form.append('occupationalrisk', '{{ $occupationalRisk->riskLevel or null }}');
+                form.append('dowjonesreport', $('#dow-jones-report')[0].files[0]);
+                form.append('questnetreport', $('#questnet-report')[0].files[0]);
+                form.append('relationshiprisk', $('#relationship-risk').val());
+                form.append('specialfactor', $('#special-factor').val());
                 form.append('overallrating', $('#overall-rating').val());
 
                 if ($('#credit-bureau-report')[0].files.length) {

@@ -11,17 +11,17 @@ class Document extends Model
 
     public $timestamps = false;
 
-    public static function saveFile(UploadedFile $fileIns, $type, $staffID)
+    public static function saveFile(UploadedFile $fileIns, $type, $employNo)
     {
         $ins = new Document();
         $tempName = 't'.str_random(16).'.'.$fileIns->clientExtension();
         $ins->type = $type;
         $ins->origName = $fileIns->getClientOriginalName();
-        $ins->subAddr = '/'.$type.'/'.$staffID.'/'.$tempName;
+        $ins->subAddr = '/'.$type.'/'.$employNo.'/'.$tempName;
 
         $ins->save();
 
-        $dest = STORAGE_PATH_KYE_CASE.'/'.$type.'/'.$staffID;
+        $dest = STORAGE_PATH_KYE_CASE.'/'.$type.'/'.$employNo;
         $fileIns->move($dest, $tempName);
 
         return $ins;
