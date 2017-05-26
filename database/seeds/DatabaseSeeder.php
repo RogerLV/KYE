@@ -178,6 +178,7 @@ class DatabaseSeeder extends Seeder
             11 => [1],
             12 => [2],
             13 => [1, 2, 3, 4],
+            14 => [2],
         ];
 
         foreach ($pageControl as $pageID => $roleIDs) {

@@ -53,4 +53,6 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('kye/case/reject/{logID}', 'KYECaseController@checkerReject')->name('KYECaseReject');
     Route::post('kye/case/make', 'KYECaseController@make')->name('KYECaseMake');
     Route::post('kye/case/delete', 'KYECaseController@delete')->name('KYECaseDelete');
+
+    Route::get('doc/display/{docID}/{name}', 'DocumentController@display')->name('DocDisplay');
 });

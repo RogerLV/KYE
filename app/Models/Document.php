@@ -26,4 +26,17 @@ class Document extends Model
 
         return $ins;
     }
+
+    public function getUrl()
+    {
+        return route('DocDisplay', [
+            'docID' => $this->id,
+            'name' => $this->origName
+        ]);
+    }
+
+    public function getPath()
+    {
+        return STORAGE_PATH_KYE_CASE.'/'.$this->subAddr;
+    }
 }

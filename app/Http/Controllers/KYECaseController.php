@@ -38,7 +38,22 @@ class KYECaseController extends Controller
 
     public function checkerPage($logID)
     {
-        
+        $pageIns = $this->pageAccessible(__CLASS__, __FUNCTION__);
+
+        $logIns = KYECaseOperationLog::findOrFail($logID);
+
+        $creditBureauReport = null;
+        if (0 != $logIns->to->CreditBureauFileID) {
+            $creditBureauReport = Document::findOrFail($logIns->to->CreditBureauFileID);
+        }
+
+        return view('kyecase.checker')
+                ->with('title', $pageIns->title)
+                ->with('log', $logIns)
+                ->with('dowJonesReport', Document::findOrFail($logIns->to->DowJonesFileID))
+                ->with('questnetReport', Document::findOrFail($logIns->to->QuestnetFileID))
+                ->with('creditBureauReport', $creditBureauReport)
+                ->with('maker', \App\Models\User::getIns($logIns->madeBy));
     }
 
     public function make()
