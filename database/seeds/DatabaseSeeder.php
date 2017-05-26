@@ -298,6 +298,20 @@ class DatabaseSeeder extends Seeder
                 'specialFactors' => 'low',
                 'overallRisk' => 'low',
             ], 'LHI1',
+            ],
+            ['KYECases', 'insert', [
+                'employNo' => '12417',
+                'name' => 'Jin Shuanghai',
+                'department' => 'Info Technology',
+                'section' => 'IT_Data and Reporting',
+                'DowJonesFileID' => 1,
+                'QuestnetFileID' => 2,
+                'CreditBureauFileID' => 3,
+                'occupationalRisk' => 'low',
+                'relationshipRisk' => 'low',
+                'specialFactors' => 'low',
+                'overallRisk' => 'low',
+            ], 'LHI1',
             ]
         ];
 

@@ -42,6 +42,10 @@ class KYECaseController extends Controller
 
         $logIns = KYECaseOperationLog::findOrFail($logID);
 
+        if (!is_null($logIns->checkedResult)) {
+            throw new AppException('KYECSCTRL006', 'Case Closed.');
+        }
+
         $creditBureauReport = null;
         if (0 != $logIns->to->CreditBureauFileID) {
             $creditBureauReport = Document::findOrFail($logIns->to->CreditBureauFileID);
@@ -99,14 +103,30 @@ class KYECaseController extends Controller
         return response()->json(['status' => 'close']);
     }
 
-    public function checkerApprove($logID)
+    public function checkerApprove()
     {
+        if (!$this->canCheck()) {
+            throw new AppException('KYECSCTRL004', ERROR_MESSAGE_NOT_AUTHORIZED);
+        }
 
+        $paras = $this->checkParameters(['logid']);
+
+        KYECaseOperationLog::checkApprove($paras['logid']);
+
+        return response()->json(['status' => 'good']);
     }
 
-    public function checkerReject($logID)
+    public function checkerReject()
     {
+        if (!$this->canCheck()) {
+            throw new AppException('KYECSCTRL005', ERROR_MESSAGE_NOT_AUTHORIZED);
+        }
 
+        $paras = $this->checkParameters(['logid']);
+
+        KYECaseOperationLog::checkReject($paras['logid']);
+
+        return response()->json(['status' => 'close']);
     }
 
     public function delete()

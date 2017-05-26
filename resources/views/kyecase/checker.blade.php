@@ -79,5 +79,35 @@
 
 
 @section('javascriptContent')
+<script type="text/javascript">
+    $(document).ready(function () {
+        var data = {logid: "{{ $log->id }}"};
 
+        $('#btn-approve').click(function () {
+            $.ajax({
+                headers: headers,
+                url: "{{ route('KYECaseApprove') }}",
+                data: data,
+                type: 'POST',
+                success: function (data) {
+                    handleReturn(data, function () {
+                        // jump to view page
+                    });
+                }
+            });
+        });
+
+        $('#btn-reject').click(function () {
+            $.ajax({
+                headers: headers,
+                url: "{{ route('KYECaseReject') }}",
+                data: data,
+                type: 'POST',
+                success: function (data) {
+                    handleReturn(data);
+                }
+            });
+        });
+    });
+</script>
 @endsection

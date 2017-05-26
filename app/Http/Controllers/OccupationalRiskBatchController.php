@@ -40,7 +40,7 @@ class OccupationalRiskBatchController extends OccupationalRiskController
                 'department' => utf8_encode($entry[INDEX_DEPARTMENT]),
                 'section' => utf8_encode($entry[INDEX_SECTION]),
                 'description' => utf8_encode($entry[INDEX_DESCRIPTION]),
-                'riskLevel' => utf8_encode($entry[INDEX_RISK_LEVEL]),
+                'riskLevel' => strtolower(utf8_encode($entry[INDEX_RISK_LEVEL])),
             ];
 
             $existingIns = OccupationalRisk::where([

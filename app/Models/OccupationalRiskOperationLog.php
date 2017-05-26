@@ -79,7 +79,8 @@ class OccupationalRiskOperationLog extends OperationLog
 
         switch ($log->type) {
             case 'insert': 
-                OccupationalRisk::insertIns($log->to);
+                $riskIns = OccupationalRisk::insertIns($log->to);
+                $log->tableID = $riskIns->id;
                 break;
 
             case 'update': 

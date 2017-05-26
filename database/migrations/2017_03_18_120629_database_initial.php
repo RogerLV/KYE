@@ -77,7 +77,7 @@ class DatabaseInitial extends Migration
         // kye case
         Schema::create('KYECases', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('staffID');
+            $table->string('employNo');
             $table->string('department');
             $table->string('section');
             $table->integer('DowJonesFileID');
