@@ -24,6 +24,23 @@ class KYECaseController extends Controller
                 ->with('occupationalRisk', $occupationalRisk);
     }
 
+    public function listPending()
+    {
+        $pageIns = $this->pageAccessible(__CLASS__, __FUNCTION__);
+
+        return view('kyecase.listpending')
+                ->with('title', $pageIns->title)
+                ->with('entries', KYECaseOperationLog::getAllPendings())
+                ->with('isMaker', $this->editable())
+                ->with('isChecker', $this->canCheck())
+                ->with('userLanID', $this->loginUser->lanID);
+    }
+
+    public function checkerPage($logID)
+    {
+        
+    }
+
     public function make()
     {
         if (!$this->editable()) {
@@ -67,16 +84,14 @@ class KYECaseController extends Controller
         return response()->json(['status' => 'close']);
     }
 
-    public function listPending()
+    public function checkerApprove($logID)
     {
-        $pageIns = $this->pageAccessible(__CLASS__, __FUNCTION__);
 
-        return view('kyecase.listpending')
-                ->with('title', $pageIns->title)
-                ->with('entries', KYECaseOperationLog::getAllPendings())
-                ->with('isMaker', $this->editable())
-                ->with('isChecker', $this->canCheck())
-                ->with('userLanID', $this->loginUser->lanID);
+    }
+
+    public function checkerReject($logID)
+    {
+
     }
 
     public function delete()

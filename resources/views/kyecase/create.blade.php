@@ -8,9 +8,9 @@
     <h4>{{ $staff->department }}-{{ $staff->section }}</h4>
 
     @if(!isset($occupationalRisk->riskLevel))
-        <h4>OccupationalRisk: <font color="red">No Matching In Occupational Risk List. Please Modify Related Info before Proceeding!</font></h4>
+        <h4>Occupational Risk: <font color="red">No Matching In Occupational Risk List. Please Modify Related Info before Proceeding!</font></h4>
     @else
-        <h4>OccupationalRisk: {{ $occupationalRisk->riskLevel }}</h4>
+        <h4>Occupational Risk: {{ $occupationalRisk->riskLevel }}</h4>
     @endif
     <hr>
 

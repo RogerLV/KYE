@@ -43,7 +43,10 @@
                             @if($userLanID == $entry->madeBy)
                                 <button class="btn btn-primary btn-xs" disabled>Check</button>
                             @else
-                                <button class="btn btn-primary btn-xs">Check</button>
+                                <button class="btn btn-primary btn-xs"
+                                        onclick=window.open("{{ route('KYECaseChecker', ['logID' => $entry->id]) }}")>
+                                    Check
+                                </button>
                             @endif
                         </td>
                     @endif

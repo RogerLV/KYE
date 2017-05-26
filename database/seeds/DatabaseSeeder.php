@@ -11,11 +11,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UsersTableSeeder::class);
         $this->seedRoles();
         $this->seedPages();
         $this->seedUserRoles();
         $this->seedParameters();
+        $this->seedTestData();
 
         $this->createFolders();
     }
@@ -146,6 +146,14 @@ class DatabaseSeeder extends Seeder
                 'StaffController',
                 'view',
             ],
+            [
+                'KYECaseChecker',
+                'KYE Case Checker Page',
+                false,
+                null,
+                'KYECaseController',
+                'checkerPage',
+            ],
         ];
 
         foreach ($pages as $pageInfo) {
@@ -222,6 +230,83 @@ class DatabaseSeeder extends Seeder
             $paraIns->key2 = $entry[1];
             $paraIns->value = $entry[2];
             $paraIns->save();
+        }
+    }
+
+    private function seedTestData()
+    {
+        // seed staff
+        $staff = [
+            ['12390', 'Info Technology', 'Lu Chao', 'IT_Research and Innovation', '2015-04-27'],
+            ['12417', 'Info Technology', 'Jin Shuanghai', 'IT_Data and Reporting', '2015-06-08'],
+        ];
+
+        foreach ($staff as $entry) {
+            $ins = new \App\Models\Staff();
+            $ins->employNo = $entry[0];
+            $ins->department = $entry[1];
+            $ins->uEngName = $entry[2];
+            $ins->section = $entry[3];
+            $ins->joinDate = $entry[4];
+
+            $ins->save();
+        }
+
+        // seed occupational risk
+        $occupationalRisks = [
+            ['Info Technology', 'IT_Research and Innovation', 'low'],
+            ['Info Technology', 'IT_Data and Reporting', 'low'],
+        ];
+
+        foreach ($occupationalRisks as $entry) {
+            $ins = new \App\Models\OccupationalRisk();
+            $ins->department = $entry[0];
+            $ins->section = $entry[1];
+            $ins->riskLevel = $entry[2];
+
+            $ins->save();
+        }
+
+        // seed pending KYE case
+        $documents = [
+            ['DowJones', 'Screen Shot 2017-05-03 at 10.41.35 PM.png', '/DowJones/12390/thepbQmQMju14lg6p.png'],
+            ['Questnet', 'Screen Shot 2017-05-03 at 10.41.35 PM.png', '/Questnet/12390/tR3dWjTobIEcSI0R3.png'],
+            ['CreditBureau', 'Screen Shot 2017-05-03 at 10.09.42 PM.png', '/CreditBureau/12390/tNVFPi9NHDdMC9QN1.png'],
+        ];
+
+        foreach ($documents as $doc) {
+            $ins = new \App\Models\Document();
+            $ins->type = $doc[0];
+            $ins->origName = $doc[1];
+            $ins->subAddr = $doc[2];
+
+            $ins->save();
+        }
+
+        $operationLogs = [
+            ['KYECases', 'insert', [
+                'employNo' => '12390',
+                'name' => 'Lu Chao',
+                'department' => 'Info Technology',
+                'section' => 'IT_Research and Innovation',
+                'DowJonesFileID' => 1,
+                'QuestnetFileID' => 2,
+                'CreditBureauFileID' => 3,
+                'occupationalRisk' => 'low',
+                'relationshipRisk' => 'low',
+                'specialFactors' => 'low',
+                'overallRisk' => 'low',
+            ], 'LHI1',
+            ]
+        ];
+
+        foreach ($operationLogs as $entry) {
+            $ins = new \App\Models\OperationLog();
+            $ins->tableName = $entry[0];
+            $ins->type = $entry[1];
+            $ins->to = json_encode($entry[2]);
+            $ins->madeBy = $entry[3];
+            $ins->save();
         }
     }
 
