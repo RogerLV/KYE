@@ -36,12 +36,14 @@ class KYECaseOperationLog extends OperationLog
             throw new AppException('KYECSOPRTNLOGMDL001', ERROR_MESSAGE_MAKER_CHECKER_SHOULD_BE_DIFFERENT);
         }
 
-        $caseIns = KYECase::logInsert($log->to);
+        $caseIns = KYECase::logInsert($log);
 
         $log->tableID = $caseIns->id;
         $log->checkedBy = LoginUserKeeper::getUser()->lanID;
         $log->checkedResult = true;
         $log->save();
+
+        return $log;
     }
 
     public static function checkReject($id)

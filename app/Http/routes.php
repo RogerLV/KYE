@@ -49,6 +49,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('kye/case/create/{empNo}', 'KYECaseController@create')->name('KYECaseCreate');
     Route::get('kye/case/list/pending', 'KYECaseController@listPending')->name('KYECaseListPending');
     Route::get('kye/case/checker/{logID}', 'KYECaseController@checkerPage')->name('KYECaseChecker');
+    Route::get('kye/case/view/{caseID}', 'KYECaseController@view')->name('KYECaseViews');
     Route::post('kye/case/confirm', 'KYECaseController@checkerApprove')->name('KYECaseApprove');
     Route::post('kye/case/reject', 'KYECaseController@checkerReject')->name('KYECaseReject');
     Route::post('kye/case/make', 'KYECaseController@make')->name('KYECaseMake');

@@ -4,10 +4,37 @@ namespace App\Http\Controllers;
 
 use App\Models\Document;
 use App\Models\KYECaseOperationLog;
+use App\Models\KYECase;
 use App\Exceptions\AppException;
 
 class KYECaseController extends Controller
 {
+    public function view($caseID)
+    {
+        $pageIns = $this->pageAccessible(__CLASS__, __FUNCTION__);
+
+        $caseIns = KYECase::findOrFail($caseID);
+
+        $creditBureauReport = null;
+        if (0 != $caseIns->CreditBureauFileID) {
+            $creditBureauReport = Document::findOrFail($caseIns->CreditBureauFileID);
+        }
+
+        $checker = null;
+        if (!is_null($caseIns->log->checkedBy)) {
+            $checker = $caseIns->log->checker;
+        }
+
+        return view('kyecase.view')
+                ->with('title', $pageIns->title)
+                ->with('case', $caseIns)
+                ->with('dowJonesReport', Document::findOrFail($caseIns->DowJonesFileID))
+                ->with('questnetReport', Document::findOrFail($caseIns->QuestnetFileID))
+                ->with('creditBureauReport', $creditBureauReport)
+                ->with('maker', $caseIns->log->maker)
+                ->with('checker', $checker);
+    }
+
     public function create($empNo)
     {
         $pageIns = $this->pageAccessible(__CLASS__, __FUNCTION__);
@@ -57,7 +84,7 @@ class KYECaseController extends Controller
                 ->with('dowJonesReport', Document::findOrFail($logIns->to->DowJonesFileID))
                 ->with('questnetReport', Document::findOrFail($logIns->to->QuestnetFileID))
                 ->with('creditBureauReport', $creditBureauReport)
-                ->with('maker', \App\Models\User::getIns($logIns->madeBy));
+                ->with('maker', $logIns->maker);
     }
 
     public function make()
@@ -111,9 +138,12 @@ class KYECaseController extends Controller
 
         $paras = $this->checkParameters(['logid']);
 
-        KYECaseOperationLog::checkApprove($paras['logid']);
+        $log = KYECaseOperationLog::checkApprove($paras['logid']);
 
-        return response()->json(['status' => 'good']);
+        return response()->json([
+            'status' => 'good',
+            'url' => route('KYECaseViews', ['case' => $log->tableID])
+        ]);
     }
 
     public function checkerReject()

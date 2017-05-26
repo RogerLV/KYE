@@ -87,6 +87,7 @@ class DatabaseInitial extends Migration
             $table->string('relationshipRisk', 10);
             $table->string('specialFactors', 10);
             $table->string('overallRisk', 10);
+            $table->integer('logID');
         });
 
         // documents

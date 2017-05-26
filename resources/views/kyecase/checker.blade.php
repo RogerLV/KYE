@@ -91,7 +91,7 @@
                 type: 'POST',
                 success: function (data) {
                     handleReturn(data, function () {
-                        // jump to view page
+                        window.location.replace(data.url);
                     });
                 }
             });

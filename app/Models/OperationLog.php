@@ -23,6 +23,16 @@ class OperationLog extends Model
     	return json_decode($value);
     }
 
+    public function maker()
+    {
+        return $this->hasOne('App\Models\User', 'lanID', 'madeBy');
+    }
+
+    public function checker()
+    {
+        return $this->hasOne('App\Models\User', 'lanID', 'checkedBy');
+    }
+
     public static function remove($id)
     {
     	$ins = self::findOrFail($id);

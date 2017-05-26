@@ -10,8 +10,19 @@ class KYECase extends Model
 
     public $timestamps = false;
 
-    public static function logInsert($caseInfo)
+    public function log()
     {
+        return $this->hasOne('App\Models\KYECaseOperationLog', 'id', 'logID');
+    }
+
+    public function staff()
+    {
+        return $this->hasOne('App\Models\Staff', 'employNo', 'employNo');
+    }
+
+    public static function logInsert(KYECaseOperationLog $logIns)
+    {
+        $caseInfo = $logIns->to;
 
         $case = new KYECase();
         $case->employNo = $caseInfo->employNo;
@@ -24,6 +35,7 @@ class KYECase extends Model
         $case->relationshipRisk = $caseInfo->relationshipRisk;
         $case->specialFactors = $caseInfo->specialFactors;
         $case->overallRisk = $caseInfo->overallRisk;
+        $case->logID = $logIns->id;
 
         $case->save();
 
