@@ -57,7 +57,7 @@
             @endif
         </div>
     @endif
-    <br>
+    <br
 
     <h5>Completed Cases:</h5>
     <table class="table table-striped">
@@ -67,7 +67,7 @@
                     <td>{{ $case->department }}</td>
                     <td>{{ $case->section }}</td>
                     <td>Overall Risk: {{ $case->overallRisk }}</td>
-                    <td>{{ $case->getElapsedTimeString() }}</td>
+                    <td>{{ \App\Logic\Util::getElapsedTimeString($case->created_at) }}</td>
                     <td>
                         <button class="btn btn-primary btn-xs"
                                 onclick=window.open("{{ route('KYECaseView', ['caseID' => $case->id]) }}")>

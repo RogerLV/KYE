@@ -40,6 +40,7 @@
                 <th>Department</th>
                 <th>Section</th>
                 <th>Join Date</th>
+                <th>Last KYE</th>
                 @if($editable)
                     <th>Edit</th>
                     <th>Remove</th>
@@ -61,6 +62,7 @@
                     <td class="department">{{ $staffEntry->department }}</td>
                     <td class="section">{{ $staffEntry->section }}</td>
                     <td class="join-date">{{ $staffEntry->joinDate }}</td>
+                    <td>{{ \App\Logic\Util::getElapsedTimeString($staffEntry->created_at) }}</td>
                     @if($editable)
                         <td>
                             <button type="button" class="btn btn-info btn-xs"

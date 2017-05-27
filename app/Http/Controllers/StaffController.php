@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\AppException;
 use App\Models\Staff;
+use DB;
 
 class StaffController extends Controller
 {
@@ -11,16 +12,22 @@ class StaffController extends Controller
     {
         $this->pageAccessible(__CLASS__, __FUNCTION__);
 
-        if ('all' == $dept) {
-            $staff = Staff::inService()->paginate(50);
-        } else {
-            $staff = Staff::inService()->where('department', $dept)->paginate(50);
+        $query = DB::table('Staff')
+                        ->join('KYECases', 'Staff.employNo', '=', 'KYECases.employNo')
+                        ->select('*', DB::raw('MAX(KYECases.created_at) AS lastConduct'))
+                        ->whereNull('Staff.leaveDate')
+                        ->whereNull('Staff.deleted_at')
+                        ->groupBy('Staff.employNo')
+                        ->orderBy('lastConduct');
+
+        if ('all' != $dept) {
+            $query = $query->where('Staff.department', $dept);
         }
 
         return view('staff.list')
                 ->with('title', 'Staff List')
                 ->with('editable', $this->loginUser->isMaker())
-                ->with('staff', $staff)
+                ->with('staff', $query->paginate(50))
                 ->with('deptOptions', Staff::select('department')->inService()->distinct()->get())
                 ->with('selectedDept', $dept);
     }
