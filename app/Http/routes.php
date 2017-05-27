@@ -57,6 +57,7 @@ Route::group(['middleware' => ['web']], function () {
 
     Route::get('review/period/view', 'ReviewPeriodController@view')->name('ReviewPeriodView');
     Route::get('reivew/period/edit', 'ReviewPeriodController@edit')->name('ReviewPeriodEdit');
+    Route::post('review/period/update', 'ReviewPeriodController@update')->name('ReviewPeriodUpdate');
 
     Route::get('doc/display/{docID}/{name}', 'DocumentController@display')->name('DocDisplay');
 });

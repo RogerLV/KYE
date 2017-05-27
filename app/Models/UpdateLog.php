@@ -27,12 +27,12 @@ class UpdateLog extends Model
         $log->save();
     }
 
-    public static function logUpdate($instance, $oldVal, $editBy=null)
+    public static function logUpdate($instance, $newVal, $editBy=null)
     {
         $log = new UpdateLog($instance, $editBy);
-        $log->newVal = $instance->toJson();
+        $log->newVal = json_encode($newVal);
         $log->type = 'UPDATE';
-        $log->oldVal = json_encode($oldVal);
+        $log->oldVal = $instance->toJson();
         $log->save();
     }
 

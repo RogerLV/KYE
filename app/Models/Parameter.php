@@ -26,4 +26,25 @@ class Parameter extends Model
     {
     	return ['Half Yearly', 'Annual', 'Biennial'];
     }
+
+    public static function updateRisk($riskInfo)
+    {
+    	$ins = self::where([
+    		['key1', '=', $riskInfo['category']],
+    		['key2', '=', $riskInfo['level']],
+    	])->first();
+
+    	if (is_null($ins)) {
+    		throw new \App\Exceptions\AppException('PRMTMDL001', ERROR_MESSAGE_DATA_ERROR);
+    	}
+
+    	if ($riskInfo['risk'] == $ins->value) {
+    		return;
+    	}
+
+    	UpdateLog::logUpdate($ins, ['value' => $riskInfo['risk']]);
+
+    	$ins->value = $riskInfo['risk'];
+    	$ins->save();
+    }
 }

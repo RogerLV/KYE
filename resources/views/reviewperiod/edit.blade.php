@@ -7,10 +7,10 @@
             <tr>
                 <th class="text-center" colspan="4">Occupational Risk</th>
             </tr>
-            <tr>
+            <tr data-category='OccupationalRisk'>
                 <th>High:</th>
-                <td>
-                    <select>
+                <td data-level='high'>
+                    <select class="risk-level">
                         @foreach($options as $option)
                             <option value="{{ $option }}" 
                                     <?php if($option == $reviewPeriods['OccupationalRisk']['high']) echo "selected"; ?>>
@@ -20,8 +20,8 @@
                     </select>
                 </td>
                 <th>Low:</th>
-                <td>
-                    <select>
+                <td data-level='low'>
+                    <select class="risk-level">
                         @foreach($options as $option)
                             <option value="{{ $option }}" 
                                     <?php if($option == $reviewPeriods['OccupationalRisk']['low']) echo "selected"; ?>>
@@ -41,10 +41,10 @@
             <tr>
                 <th class="text-center" colspan="4">Relationship Risk</th>
             </tr>
-            <tr>
+            <tr data-category='RelationshipRisk'>
                 <th>High:</th>
-                <td>
-                    <select>
+                <td data-level='high'>
+                    <select class="risk-level">
                         @foreach($options as $option)
                             <option value="{{ $option }}" 
                                     <?php if($option == $reviewPeriods['RelationshipRisk']['high']) echo "selected"; ?>>
@@ -54,8 +54,8 @@
                     </select>
                 </td>
                 <th>Low:</th>
-                <td>
-                    <select>
+                <td data-level='low'>
+                    <select class="risk-level">
                         @foreach($options as $option)
                             <option value="{{ $option }}" 
                                     <?php if($option == $reviewPeriods['RelationshipRisk']['low']) echo "selected"; ?>>
@@ -75,10 +75,10 @@
             <tr>
                 <th class="text-center" colspan="4">Special Factors Risk</th>
             </tr>
-            <tr>
+            <tr data-category='SpecialFactorRisk'>
                 <th>High:</th>
-                <td>
-                    <select>
+                <td data-level='high'>
+                    <select class="risk-level">
                         @foreach($options as $option)
                             <option value="{{ $option }}" 
                                     <?php if($option == $reviewPeriods['SpecialFactorRisk']['high']) echo "selected"; ?>>
@@ -88,8 +88,8 @@
                     </select>
                 </td>
                 <th>Low:</th>
-                <td>
-                    <select>
+                <td data-level='low'>
+                    <select class="risk-level">
                         @foreach($options as $option)
                             <option value="{{ $option }}" 
                                     <?php if($option == $reviewPeriods['SpecialFactorRisk']['low']) echo "selected"; ?>>
@@ -107,5 +107,29 @@
 
 
 @section('javascriptContent')
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('select.risk-level').change(function () {
+            var td = $(this).parent();
+            var data = {
+                category: td.parent().data('category'),
+                level:td.data('level'),
+                risk: $(this).val()
+            };
 
+            $.ajax({
+                headers: headers,
+                url: "{{ route('ReviewPeriodUpdate') }}",
+                data: data,
+                type: 'POST',
+                success: function (data) {
+                    handleReturn(data, function () {
+                        setAlertText("Update Success.");
+                        $("#alert-modal").modal('show');
+                    });
+                }
+            });
+        });
+    });
+</script>
 @endsection

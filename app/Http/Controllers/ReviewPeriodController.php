@@ -26,4 +26,17 @@ class ReviewPeriodController extends Controller
                 ->with('reviewPeriods', Parameter::getRiskSettings())
                 ->with('options', Parameter::getReviewPeriodOptions());
     }
+
+    public function update()
+    {
+        if (!$this->loginUser->isAppAdmin()) {
+            throw new \App\Exceptions\AppException('RVWPRDCTRL001', ERROR_MESSAGE_NOT_AUTHORIZED);
+        }
+
+        $paras = $this->checkParameters(['category', 'level', 'risk']);
+
+        Parameter::updateRisk($paras);
+
+        return response()->json(['status' => 'good']);
+    }
 }
