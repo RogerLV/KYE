@@ -27,7 +27,7 @@ class RoleController extends Controller
                         ->orderBy('roleID', 'DESC')
                         ->get();
 
-        $editable = $this->editable();
+        $editable = $this->loginUser->isAppAdmin();
         $roleOptions = $editable ? \App\Models\Role::where('hide', false)->get() : [];
         $candidates = $editable ? \App\Models\User::where([
             ['dept', '=', 'HRD'],
@@ -68,15 +68,9 @@ class RoleController extends Controller
         return response()->json(['status' => 'good']);
     }
 
-
-    private function editable()
-    {
-        return $this->loginUser->roleID == ROLE_ID_APP_ADMIN;
-    }
-
     private function checkEditable()
     {
-        if (!$this->editable()) {
+        if (!$this->loginUser->isAppAdmin()) {
             throw new AppException('RLECTRL001', ERROR_MESSAGE_NOT_AUTHORIZED);
         }
     }

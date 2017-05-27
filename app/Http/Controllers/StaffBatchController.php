@@ -9,7 +9,7 @@ class StaffBatchController extends StaffController
 {
     public function receiveStaffList()
     {
-        if (!$this->editable()) {
+        if (!$this->loginUser->isMaker()) {
             throw new AppException('STFCTRL001', ERROR_MESSAGE_NOT_AUTHORIZED);
         }
 
@@ -91,7 +91,7 @@ class StaffBatchController extends StaffController
 
     public function confirmStaffList()
     {
-        if (!$this->editable()) {
+        if (!$this->loginUser->isMaker()) {
             throw new AppException('STFCTRL005', ERROR_MESSAGE_NOT_AUTHORIZED);
         }
 

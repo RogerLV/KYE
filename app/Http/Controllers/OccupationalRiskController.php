@@ -20,8 +20,8 @@ class OccupationalRiskController extends Controller
 
         return view('occupational.list')
                 ->with('entries', $entries)
-                ->with('editable', $this->editable())
-                ->with('canCheck', $this->canCheck())
+                ->with('editable', $this->loginUser->isMaker())
+                ->with('canCheck', $this->loginUser->isChecker())
                 ->with('title', 'Occupational Risk List')
                 ->with('deptOptions', \App\Models\OccupationalRisk::select('department')->distinct()->get())
                 ->with('selectedDept', $dept);
@@ -46,7 +46,7 @@ class OccupationalRiskController extends Controller
 
     public function deletePending()
     {
-        if (!$this->editable()) {
+        if (!$this->loginUser->isMaker()) {
             throw new AppException('OCPTNRSKCTL001', ERROR_MESSAGE_NOT_AUTHORIZED);
         }
 
@@ -59,7 +59,7 @@ class OccupationalRiskController extends Controller
 
     public function checkerApprove()
     {
-        if (!$this->canCheck()) {
+        if (!$this->loginUser->isChecker()) {
             throw new AppException('OCPTNRSKCTL002', ERROR_MESSAGE_NOT_AUTHORIZED);
         }
 
@@ -72,7 +72,7 @@ class OccupationalRiskController extends Controller
 
     public function checkerReject()
     {
-        if (!$this->canCheck()) {
+        if (!$this->loginUser->isChecker()) {
             throw new AppException('OCPTNRSKCTL003', ERROR_MESSAGE_NOT_AUTHORIZED);
         }
 
@@ -85,7 +85,7 @@ class OccupationalRiskController extends Controller
 
     public function add()
     {
-        if (!$this->editable()) {
+        if (!$this->loginUser->isMaker()) {
             throw new AppException('OCPTNRSKCTL004', ERROR_MESSAGE_NOT_AUTHORIZED);
         }
 
@@ -103,7 +103,7 @@ class OccupationalRiskController extends Controller
 
     public function delete()
     {
-        if (!$this->editable()) {
+        if (!$this->loginUser->isMaker()) {
             throw new AppException('OCPTNRSKCTL005', ERROR_MESSAGE_NOT_AUTHORIZED);
         }
 
@@ -118,7 +118,7 @@ class OccupationalRiskController extends Controller
 
     public function edit()
     {
-        if (!$this->editable()) {
+        if (!$this->loginUser->isMaker()) {
             throw new AppException('OCPTNRSKCTL005', ERROR_MESSAGE_NOT_AUTHORIZED);
         }
 
@@ -134,15 +134,5 @@ class OccupationalRiskController extends Controller
         ]);
         
         return response()->json(['status' => 'good']);
-    }
-
-    protected function editable()
-    {
-        return $this->loginUser->roleID == ROLE_ID_MAKER;
-    }
-
-    protected function canCheck()
-    {
-        return $this->loginUser->roleID == ROLE_ID_CHECKER;
     }
 }

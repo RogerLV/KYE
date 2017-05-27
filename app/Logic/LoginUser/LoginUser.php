@@ -32,4 +32,19 @@ class LoginUser
     {
         return $this->activeRole->$attr;
     }
+
+    public function isMaker()
+    {
+        return $this->activeRole->roleID == ROLE_ID_MAKER;
+    }
+
+    public function isChecker()
+    {
+        return $this->activeRole->roleID == ROLE_ID_CHECKER;
+    }
+
+    public function isAppAdmin()
+    {
+        return $this->activeRole->roleID == ROLE_ID_APP_ADMIN;
+    }
 }

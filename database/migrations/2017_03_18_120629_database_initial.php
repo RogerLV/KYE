@@ -22,6 +22,7 @@ class DatabaseInitial extends Migration
             $table->string('section')->nullable();
             $table->date('joinDate')->nullable();
             $table->date('leaveDate')->nullable();
+            $table->integer('pendingCaseID')->nullable();
 
             $table->softDeletes();
         });
@@ -88,6 +89,8 @@ class DatabaseInitial extends Migration
             $table->string('specialFactors', 10);
             $table->string('overallRisk', 10);
             $table->integer('logID');
+
+            $table->timestamps();
         });
 
         // documents

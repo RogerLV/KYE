@@ -19,7 +19,7 @@ class StaffController extends Controller
 
         return view('staff.list')
                 ->with('title', 'Staff List')
-                ->with('editable', $this->editable())
+                ->with('editable', $this->loginUser->isMaker())
                 ->with('staff', $staff)
                 ->with('deptOptions', Staff::select('department')->inService()->distinct()->get())
                 ->with('selectedDept', $dept);
@@ -27,7 +27,7 @@ class StaffController extends Controller
 
     public function remove()
     {
-        if (!$this->editable()) {
+        if (!$this->loginUser->isMaker()) {
             throw new AppException('STFCTRL006', ERROR_MESSAGE_NOT_AUTHORIZED);
         }
 
@@ -40,7 +40,7 @@ class StaffController extends Controller
 
     public function edit()
     {
-        if (!$this->editable()) {
+        if (!$this->loginUser->isMaker()) {
             throw new AppException('STFCTRL007', ERROR_MESSAGE_NOT_AUTHORIZED);
         }
 
@@ -73,7 +73,7 @@ class StaffController extends Controller
 
     public function add()
     {
-        if (!$this->editable()) {
+        if (!$this->loginUser->isMaker()) {
             throw new AppException('STFCTRL009', ERROR_MESSAGE_NOT_AUTHORIZED);
         }
 
@@ -104,15 +104,14 @@ class StaffController extends Controller
     {
         $pageIns = $this->pageAccessible(__CLASS__, __FUNCTION__);
 
+        $staffIns = Staff::getIns($empNo);
+
         return view('staff.view')
                 ->with('title', $pageIns->title)
-                ->with('staff', Staff::getIns($empNo))
-                ->with('editable', $this->editable());
-    }
-
-
-    protected function editable()
-    {
-        return $this->loginUser->roleID == ROLE_ID_MAKER;
+                ->with('staff', $staffIns)
+                ->with('isMaker', $this->loginUser->isMaker())
+                ->with('isChecker', $this->loginUser->isChecker())
+                ->with('pendingCaseLog', $staffIns->pendingCaseLog)
+                ->with('approvedCases', $staffIns->kyeCases->sortByDesc('created_at'));
     }
 }

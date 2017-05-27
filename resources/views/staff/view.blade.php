@@ -32,12 +32,52 @@
     </table>
     <br>
 
-    @if($editable)
-        <button class="btn btn-primary btn-block" 
-                onclick=window.open('{{ route('KYECaseCreate', ['empNo' => $staff->employNo]) }}')>
-            File One KYE Case
-        </button>
+    @if(is_null($pendingCaseLog))
+        @if($isMaker)
+            <button class="btn btn-primary btn-block" 
+                    onclick=window.open('{{ route('KYECaseCreate', ['empNo' => $staff->employNo]) }}')>
+                File One KYE Case
+            </button>
+        @endif
+    @else
+        <div class="alert alert-info alert-xs" style="padding: 0">
+            @if($isChecker)
+                <a href="{{ route('KYECaseChecker', ['logID' => $pendingCaseLog->id]) }}" target="_blank" class="alert-link">
+            @endif
+                <table class="table" style="margin: 0">
+                    <tr>
+                        <td>Pending Case:</td>
+                        <td>{{ $pendingCaseLog->to->department }}</td>
+                        <td>{{ $pendingCaseLog->to->section }}</td>
+                        <td>Overall Risk: {{ $pendingCaseLog->to->overallRisk }}</td>
+                    </tr>
+                </table>
+            @if($isChecker)
+            </a>
+            @endif
+        </div>
     @endif
+    <br>
+
+    <h5>Completed Cases:</h5>
+    <table class="table table-striped">
+        <tbody>
+            @foreach($approvedCases as $case)
+                <tr>
+                    <td>{{ $case->department }}</td>
+                    <td>{{ $case->section }}</td>
+                    <td>Overall Risk: {{ $case->overallRisk }}</td>
+                    <td>{{ $case->getElapsedTimeString() }}</td>
+                    <td>
+                        <button class="btn btn-primary btn-xs"
+                                onclick=window.open("{{ route('KYECaseView', ['caseID' => $case->id]) }}")>
+                            View
+                        </button>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
 @endsection
 
 

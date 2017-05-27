@@ -9,7 +9,7 @@ class OccupationalRiskBatchController extends OccupationalRiskController
 {
     public function receive()
     {
-        if (!$this->editable()) {
+        if (!$this->loginUser->isMaker()) {
             throw new AppException('OCPRSKBAH001', ERROR_MESSAGE_NOT_AUTHORIZED);
         }
 
@@ -60,7 +60,7 @@ class OccupationalRiskBatchController extends OccupationalRiskController
 
     public function approveAll()
     {
-        if (!$this->canCheck()) {
+        if (!$this->loginUser->isChecker()) {
             throw new AppException('OCPRSKBAH005', ERROR_MESSAGE_NOT_AUTHORIZED);
         }
 
@@ -73,7 +73,7 @@ class OccupationalRiskBatchController extends OccupationalRiskController
 
     public function rejectAll()
     {
-        if (!$this->canCheck()) {
+        if (!$this->loginUser->isChecker()) {
             throw new AppException('OCPRSKBAH006', ERROR_MESSAGE_NOT_AUTHORIZED);
         }
 

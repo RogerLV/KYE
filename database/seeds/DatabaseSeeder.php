@@ -239,8 +239,8 @@ class DatabaseSeeder extends Seeder
     {
         // seed staff
         $staff = [
-            ['12390', 'Info Technology', 'Lu Chao', 'IT_Research and Innovation', '2015-04-27'],
-            ['12417', 'Info Technology', 'Jin Shuanghai', 'IT_Data and Reporting', '2015-06-08'],
+            ['12390', 'Info Technology', 'Lu Chao', 'IT_Research and Innovation', '2015-04-27', 1],
+            ['12417', 'Info Technology', 'Jin Shuanghai', 'IT_Data and Reporting', '2015-06-08', 2],
         ];
 
         foreach ($staff as $entry) {
@@ -250,6 +250,7 @@ class DatabaseSeeder extends Seeder
             $ins->uEngName = $entry[2];
             $ins->section = $entry[3];
             $ins->joinDate = $entry[4];
+            $ins->pendingCaseID = $entry[5];
 
             $ins->save();
         }
@@ -268,7 +269,7 @@ class DatabaseSeeder extends Seeder
 
             $ins->save();
         }
-
+        
         // seed pending KYE case
         $documents = [
             ['DowJones', 'Screen Shot 2017-05-03 at 10.41.35 PM.png', '/DowJones/12390/thepbQmQMju14lg6p.png'],

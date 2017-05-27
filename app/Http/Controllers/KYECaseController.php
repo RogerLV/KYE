@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Document;
 use App\Models\KYECaseOperationLog;
 use App\Models\KYECase;
+use App\Models\Staff;
 use App\Exceptions\AppException;
 
 class KYECaseController extends Controller
@@ -39,7 +40,12 @@ class KYECaseController extends Controller
     {
         $pageIns = $this->pageAccessible(__CLASS__, __FUNCTION__);
 
-        $staffIns = \App\Models\Staff::getIns($empNo);
+        $staffIns = Staff::getIns($empNo);
+
+        if (!is_null($staffIns->pendingCaseID)) {
+            throw new AppException('KYECSCTRL007', 'Please check existing case before creating a new one.');
+        }
+
         $occupationalRisk = \App\Models\OccupationalRisk::where([
             ['department', '=', $staffIns->department],
             ['section', '=', $staffIns->section],
@@ -47,7 +53,7 @@ class KYECaseController extends Controller
 
         return view('kyecase.create')
                 ->with('title', $pageIns->title)
-                ->with('staff', \App\Models\Staff::getIns($empNo))
+                ->with('staff', Staff::getIns($empNo))
                 ->with('occupationalRisk', $occupationalRisk);
     }
 
@@ -58,8 +64,8 @@ class KYECaseController extends Controller
         return view('kyecase.listpending')
                 ->with('title', $pageIns->title)
                 ->with('entries', KYECaseOperationLog::getAllPendings())
-                ->with('isMaker', $this->editable())
-                ->with('isChecker', $this->canCheck())
+                ->with('isMaker', $this->loginUser->isMaker())
+                ->with('isChecker', $this->loginUser->isChecker())
                 ->with('userLanID', $this->loginUser->lanID);
     }
 
@@ -89,7 +95,7 @@ class KYECaseController extends Controller
 
     public function make()
     {
-        if (!$this->editable()) {
+        if (!$this->loginUser->isMaker()) {
             throw new AppException('KYECSCTRL001', ERROR_MESSAGE_NOT_AUTHORIZED);
         }
 
@@ -100,7 +106,11 @@ class KYECaseController extends Controller
             throw new AppException('KYECSCTRL002', ERROR_MESSAGE_DATA_ERROR);
         }
 
-        $staffIns = \App\Models\Staff::getIns($paras['employno']);
+        $staffIns = Staff::getIns($paras['employno']);
+
+        if (!is_null($staffIns->pendingCaseID)) {
+            throw new AppException('KYECSCTRL008', 'Please check existing case before creating a new one.');
+        }
 
         $dowJonesReport = request()->file('dowjonesreport');
         $dowJonesDoc = Document::saveFile($dowJonesReport, 'DowJones', $paras['employno']);
@@ -113,7 +123,7 @@ class KYECaseController extends Controller
             $creditBureauDoc = Document::saveFile($creditBureauReport, 'CreditBureau', $paras['employno']);
         }
 
-        KYECaseOperationLog::logInsert([
+        $logIns = KYECaseOperationLog::logInsert([
             'employNo' => $paras['employno'],
             'name' => $staffIns->uEngName,
             'department' => $staffIns->department,
@@ -127,12 +137,16 @@ class KYECaseController extends Controller
             'overallRisk' => strtolower($paras['overallrating']),
         ]);
 
+        // set pending case id
+        $staffIns->pendingCaseID = $logIns->id;
+        $staffIns->save();
+
         return response()->json(['status' => 'close']);
     }
 
     public function checkerApprove()
     {
-        if (!$this->canCheck()) {
+        if (!$this->loginUser->isChecker()) {
             throw new AppException('KYECSCTRL004', ERROR_MESSAGE_NOT_AUTHORIZED);
         }
 
@@ -140,28 +154,38 @@ class KYECaseController extends Controller
 
         $log = KYECaseOperationLog::checkApprove($paras['logid']);
 
+        //unset pending case id in staff ins
+        $staffIns = Staff::getIns($log->to->employNo);
+        $staffIns->pendingCaseID = null;
+        $staffIns->save();
+
         return response()->json([
             'status' => 'good',
-            'url' => route('KYECaseViews', ['case' => $log->tableID])
+            'url' => route('KYECaseView', ['case' => $log->tableID])
         ]);
     }
 
     public function checkerReject()
     {
-        if (!$this->canCheck()) {
+        if (!$this->loginUser->isChecker()) {
             throw new AppException('KYECSCTRL005', ERROR_MESSAGE_NOT_AUTHORIZED);
         }
 
         $paras = $this->checkParameters(['logid']);
 
-        KYECaseOperationLog::checkReject($paras['logid']);
+        $log = KYECaseOperationLog::checkReject($paras['logid']);
+
+        //unset pending case id in staff ins
+        $staffIns = Staff::getIns($log->to->employNo);
+        $staffIns->pendingCaseID = null;
+        $staffIns->save();
 
         return response()->json(['status' => 'close']);
     }
 
     public function delete()
     {
-        if (!$this->editable()) {
+        if (!$this->loginUser->isMaker()) {
             throw new AppException('KYECSCTRL003', ERROR_MESSAGE_NOT_AUTHORIZED);
         }
 
@@ -170,16 +194,5 @@ class KYECaseController extends Controller
         KYECaseOperationLog::remove($paras['entryid']);
 
         return response()->json(['status' => 'good']);
-    }
-
-
-    protected function editable()
-    {
-        return $this->loginUser->roleID == ROLE_ID_MAKER;
-    }
-
-    protected function canCheck()
-    {
-        return $this->loginUser->roleID == ROLE_ID_CHECKER;
     }
 }

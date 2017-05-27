@@ -18,6 +18,8 @@ class KYECaseOperationLog extends OperationLog
         $log->madeBy = LoginUserKeeper::getUser()->lanID;
 
         $log->save();
+
+        return $log;
     }
 
     public static function getAllPendings()
@@ -57,5 +59,7 @@ class KYECaseOperationLog extends OperationLog
         $log->checkedBy = LoginUserKeeper::getUser()->lanID;
         $log->checkedResult = false;
         $log->save();
+
+        return $log;
     }
 }
