@@ -42,7 +42,7 @@ class DatabaseSeeder extends Seeder
     private function seedPages()
     {
         $pages = [
-            [
+            1 => [
                 'StaffList',
                 'Staff List', 
                 true, 
@@ -50,7 +50,7 @@ class DatabaseSeeder extends Seeder
                 'StaffController', 
                 'listAll',
             ],
-            [
+            2 => [
                 'OccupationalRiskList',
                 'Occupational Risk', 
                 true, 
@@ -58,7 +58,7 @@ class DatabaseSeeder extends Seeder
                 'OccupationalRiskController', 
                 'listAll',
             ],
-            [
+            3 => [
                 'RoleList',
                 'User List',
                 true, 
@@ -66,79 +66,15 @@ class DatabaseSeeder extends Seeder
                 'RoleController', 
                 'listAll',
             ],
-            [
-                'ReviewPeriodSetting',
-                'Review Period Setting',
+            4 => [
+                'ReviewPeriodView',
+                'Review Period Settings',
                 true,
                 'glyphicon glyphicon-calendar',
                 'ReviewPeriodController',
-                'setting',
-            ],
-            [
-                'StaffView',
-                'Staff Info',
-                false,
-                null,
-                'StaffController',
                 'view',
             ],
-            [
-                'KYECaseCreate',
-                'Create KYE Case',
-                false,
-                null,
-                'KYECaseController',
-                'create',
-            ],
-            [
-                'KYECaseView',
-                'View KYE Case',
-                false,
-                null,
-                'KYECaseController',
-                'view',
-            ],
-            [
-                'OccupationalRiskCheck',
-                'Occupational Risk Check',
-                false,
-                null,
-                'OccupationalRiskController',
-                'check',
-            ],
-            [
-                'KYECaseListPending',
-                'Pending KYE Cases',
-                true,
-                'glyphicon glyphicon-search',
-                'KYECaseController',
-                'listPending',
-            ],
-            [
-                'StaffViewEx',
-                'View Ex-Staff',
-                false,
-                null,
-                'ExStaffController',
-                'listAll',
-            ],
-            [
-                'OccupationalRiskMaker',
-                'Occupational Risk Maker Edit Page',
-                false,
-                null,
-                'OccupationalRiskController',
-                'makerPage',
-            ],
-            [
-                'OccupationalRiskChecker',
-                'Occupational Risk Checker Approve Page',
-                false,
-                null,
-                'OccupationalRiskController',
-                'checkerPage',
-            ],
-            [
+            5 => [
                 'StaffInfo',
                 'Staff Info',
                 false,
@@ -146,13 +82,69 @@ class DatabaseSeeder extends Seeder
                 'StaffController',
                 'view',
             ],
-            [
+            6 => [
+                'KYECaseCreate',
+                'Create KYE Case',
+                false,
+                null,
+                'KYECaseController',
+                'create',
+            ],
+            7 => [
+                'KYECaseView',
+                'View KYE Case',
+                false,
+                null,
+                'KYECaseController',
+                'view',
+            ],
+            8 => [
+                'OccupationalRiskChecker',
+                'Occupational Risk Checker Approve Page',
+                false,
+                null,
+                'OccupationalRiskController',
+                'checkerPage',
+            ],
+            9 => [
+                'KYECaseListPending',
+                'Pending KYE Cases',
+                true,
+                'glyphicon glyphicon-search',
+                'KYECaseController',
+                'listPending',
+            ],
+            10 => [
+                'StaffViewEx',
+                'View Ex-Staff',
+                false,
+                null,
+                'ExStaffController',
+                'listAll',
+            ],
+            11 => [
+                'OccupationalRiskMaker',
+                'Occupational Risk Maker Edit Page',
+                false,
+                null,
+                'OccupationalRiskController',
+                'makerPage',
+            ],
+            12 => [
                 'KYECaseChecker',
                 'KYE Case Checker Page',
                 false,
                 null,
                 'KYECaseController',
                 'checkerPage',
+            ],
+            13 => [
+                'ReviewPeriodEdit',
+                'Review Period Settings Edit Page',
+                false,
+                null,
+                'ReviewPeriodController',
+                'edit',
             ],
         ];
 
@@ -172,14 +164,16 @@ class DatabaseSeeder extends Seeder
             1 => [1, 2, 3, 4],
             2 => [1, 2, 3, 4],
             3 => [1, 2, 3, 4],
+            4 => [1, 2, 3, 4],
+            5 => [1, 2, 3, 4],
             6 => [1],
             7 => [1, 2, 3, 4],
+            8 => [2],
             9 => [1, 2],
             10 => [1, 2, 3, 4],
             11 => [1],
             12 => [2],
-            13 => [1, 2, 3, 4],
-            14 => [2],
+            13 => [3],
         ];
 
         foreach ($pageControl as $pageID => $roleIDs) {
@@ -221,7 +215,7 @@ class DatabaseSeeder extends Seeder
             ['OccupationalRisk', 'low', 'Biennial'],
             ['OccupationalRisk', 'high', 'Annual'],
             ['RelationshipRisk', 'low', 'Biennial'],
-            ['RelationshipRisk', 'high', 'HalfYearly'],
+            ['RelationshipRisk', 'high', 'Half Yearly'],
             ['SpecialFactorRisk', 'low', 'Biennial'],
             ['SpecialFactorRisk', 'high', 'Annual'],
         ];
