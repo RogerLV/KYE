@@ -22,8 +22,8 @@
                     <label>Risk Level</label>
                     <select class="form-control occupational-risk-level">
                         <option disabled selected></option>
-                        <option value="High">High</option>
-                        <option value="Low">Low</option>
+                        <option value="high">High</option>
+                        <option value="low">Low</option>
                     </select>
                 </div>
             </div>

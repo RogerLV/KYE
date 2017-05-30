@@ -44,7 +44,7 @@
     $(document).ready(function () {
         $('#remove-staff-modal').on('show.bs.modal', function (event) {
             var tr = $(event.relatedTarget).parents('tr');
-            var employNo = tr.find("td.employ-no").text();
+            var employNo = tr.find("td.employ-no").find('a').text();
             var employName = tr.find("td.employ-name").text();
             var department = tr.find("td.department").text();
             var section = tr.find('td.section').text();

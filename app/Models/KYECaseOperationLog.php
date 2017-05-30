@@ -8,11 +8,31 @@ use App\Exceptions\AppException;
 
 class KYECaseOperationLog extends OperationLog
 {
+    protected static $tableName = 'KYECases';
+
+    public function showRecord()
+    {
+        return $this->to->employNo." "
+                .$this->to->name." "
+                .$this->to->department." "
+                .$this->to->section.". Overall Risk: "
+                .$this->to->overallRisk.".<br> Maker: "
+                .$this->maker->getDualName()." "
+                .$this->created_at."<br> Checker: "
+                .$this->checker->getDualName()." "
+                .$this->updated_at.".";
+    }
+
+    public static function getLatest($no = null)
+    {
+        return self::getLatestRecords($no, self::$tableName);
+    }
+
     public static function logInsert($KYECaseInfo)
     {
         $log = new OperationLog();
 
-        $log->tableName = 'KYECases';
+        $log->tableName = self::$tableName;
         $log->type = 'insert';
         $log->to = json_encode($KYECaseInfo);
         $log->madeBy = LoginUserKeeper::getUser()->lanID;
@@ -24,7 +44,7 @@ class KYECaseOperationLog extends OperationLog
 
     public static function getAllPendings()
     {
-        return self::where('tableName', 'KYECases')
+        return self::where('tableName', self::$tableName)
                     ->whereNull('checkedBy')
                     ->whereNull('checkedResult')
                     ->get();

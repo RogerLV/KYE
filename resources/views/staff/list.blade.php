@@ -54,15 +54,19 @@
                     data-employ-no="{{ $staffEntry->employNo }}">
                     <td>{{ $i++ }}</td>
                     <td class="employ-no">
-                        <a href="{{ route('StaffInfo', ['empNo' => $staffEntry->employNo]) }}" target="_blank">
-                            {{ $staffEntry->employNo }}
-                        </a>
+                        <a href="{{ route('StaffInfo', ['empNo' => $staffEntry->employNo]) }}" target="_blank">{{ $staffEntry->employNo }}</a>
                     </td>
                     <td class="employ-name">{{ $staffEntry->uEngName }}</td>
                     <td class="department">{{ $staffEntry->department }}</td>
                     <td class="section">{{ $staffEntry->section }}</td>
                     <td class="join-date">{{ $staffEntry->joinDate }}</td>
-                    <td>{{ \App\Logic\Util::getElapsedTimeString($staffEntry->created_at) }}</td>
+                    <td>
+                        @if(isset($staffEntry->created_at))
+                            {{ \App\Logic\Util::getElapsedTimeString($staffEntry->created_at) }}
+                        @else
+                            Never Done
+                        @endif
+                    </td>
                     @if($editable)
                         <td>
                             <button type="button" class="btn btn-info btn-xs"

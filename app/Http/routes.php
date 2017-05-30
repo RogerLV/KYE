@@ -60,4 +60,6 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('review/period/update', 'ReviewPeriodController@update')->name('ReviewPeriodUpdate');
 
     Route::get('doc/display/{docID}/{name}', 'DocumentController@display')->name('DocDisplay');
+
+    Route::get('log/view', 'LogController@view')->name('LogView');
 });

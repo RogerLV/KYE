@@ -146,6 +146,14 @@ class DatabaseSeeder extends Seeder
                 'ReviewPeriodController',
                 'edit',
             ],
+            14 => [
+                'LogView',
+                'Log View Page',
+                true,
+                'glyphicon glyphicon-list',
+                'LogController',
+                'view',
+            ],
         ];
 
         foreach ($pages as $pageInfo) {
@@ -174,6 +182,7 @@ class DatabaseSeeder extends Seeder
             11 => [1],
             12 => [2],
             13 => [3],
+            14 => [1, 2, 3, 4],
         ];
 
         foreach ($pageControl as $pageID => $roleIDs) {

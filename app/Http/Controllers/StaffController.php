@@ -13,8 +13,8 @@ class StaffController extends Controller
         $this->pageAccessible(__CLASS__, __FUNCTION__);
 
         $query = DB::table('Staff')
-                        ->join('KYECases', 'Staff.employNo', '=', 'KYECases.employNo')
-                        ->select('*', DB::raw('MAX(KYECases.created_at) AS lastConduct'))
+                        ->leftJoin('KYECases', 'Staff.employNo', '=', 'KYECases.employNo')
+                        ->select('Staff.*', DB::raw('MAX(KYECases.created_at) AS lastConduct'), 'KYECases.created_at')
                         ->whereNull('Staff.leaveDate')
                         ->whereNull('Staff.deleted_at')
                         ->groupBy('Staff.employNo')
@@ -58,8 +58,8 @@ class StaffController extends Controller
         // check if there is any changes
         if ($staffIns->uEngName == $paras['name']
             && $staffIns->department == $paras['department']
-            && $staffIns->section = $paras['section']
-            && $staffIns->joinDate = $paras['joindate']) {
+            && $staffIns->section == $paras['section']
+            && $staffIns->joinDate == $paras['joindate']) {
             throw new AppException('STFCTRL008', 'No change has been made.');
         }
 

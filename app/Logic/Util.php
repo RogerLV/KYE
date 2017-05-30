@@ -22,8 +22,8 @@ class Util
         if ($dd->h > 1) return "$dd->h hours ago";
         else if($dd->h == 1) return "1 hour ago";
 
-        if ($dd->m > 1) return "$dd->m minutes ago";
-        else if($dd->m == 1) return "1 minute ago";
+        if ($dd->i > 1) return "$dd->i minutes ago";
+        else if($dd->i == 1) return "1 minute ago";
 
         if ($dd->s > 1) return "$dd->s seconds ago";
         else if($dd->s == 1) return "1 second ago";

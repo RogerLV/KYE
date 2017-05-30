@@ -7,11 +7,50 @@ use App\Exceptions\AppException;
 
 class OccupationalRiskOperationLog extends OperationLog
 {
+    protected static $tableName = 'OccupationalRisks';
+
+    public function showRecord()
+    {
+        switch ($this->type) {
+            case 'insert':
+                $record = "Add ".$this->to->department." "
+                        .$this->to->section." risk level: "
+                        .$this->to->riskLevel.".";
+                break;
+
+            case 'remove':
+                $record = "Remove ".$this->from->department." "
+                        .$this->from->section." risk level: "
+                        .$this->from->riskLevel.".";
+                break;
+
+            case 'update':
+                $record = "Edit ".$this->from->department." "
+                        .$this->from->section." risk level: "
+                        .$this->from->riskLevel.", ";
+                foreach ($this->to as $key => $value) {
+                    if ($this->from->$key != $value) {
+                        $record .= "update ".$key." from '".$this->from->$key."' to '".$value.";";
+                    }
+                }
+                break;
+        }
+
+        return $record."<br>"
+                ."Maker: ".$this->maker->getDualName()." at ".$this->created_at."<br>"
+                ."Checker: ".$this->checker->getDualName()." at ".$this->updated_at;
+    }
+
+    public static function getLatest($no = null)
+    {
+        return self::getLatestRecords($no, self::$tableName);
+    }
+
     public static function logInsert($occupationalRiskInfo)
     {
         $log = new OperationLog();
 
-        $log->tableName = 'OccupationalRisks';
+        $log->tableName = self::$tableName;
         $log->type = 'insert';
         $log->to = json_encode($occupationalRiskInfo);
         $log->madeBy = LoginUserKeeper::getUser()->lanID;
@@ -38,7 +77,7 @@ class OccupationalRiskOperationLog extends OperationLog
 
         $log = new OperationLog();
 
-        $log->tableName = 'OccupationalRisks';
+        $log->tableName = self::$tableName;
         $log->tableID = $occupationalRiskIns->id;
         $log->type = 'update';
         $log->from = $occupationalRiskIns->toJson();
@@ -56,7 +95,7 @@ class OccupationalRiskOperationLog extends OperationLog
         
         $log = new OperationLog();
 
-        $log->tableName = 'OccupationalRisks';
+        $log->tableName = self::$tableName;
         $log->tableID = $occupationalRiskIns->id;
         $log->type = 'remove';
         $log->from = $occupationalRiskIns->toJson();
@@ -116,7 +155,7 @@ class OccupationalRiskOperationLog extends OperationLog
 
     public static function getAllPendings()
     {
-        return self::where('tableName', 'OccupationalRisks')
+        return self::where('tableName', self::$tableName)
                     ->whereNull('checkedBy')
                     ->get();
     }
@@ -135,7 +174,7 @@ class OccupationalRiskOperationLog extends OperationLog
     protected static function entryIsPending($occupationalRiskID)
     {
         $existing = self::where([
-            ['tableName', '=', 'OccupationalRisks'],
+            ['tableName', '=', self::$tableName],
             ['tableID', '=', $occupationalRiskID],
         ])->whereNull('checkedBy')
         ->whereNull('checkedResult')
