@@ -59,4 +59,13 @@ class OperationLog extends Model
 
         return $query->get();
     }
+
+    protected static function hasPendingRecord($tableName)
+    {
+        $existing = self::where('tableName', $tableName)
+                            ->whereNull('checkedBy')
+                            ->first();
+
+        return !is_null($existing);
+    }
 }

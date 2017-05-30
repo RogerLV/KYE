@@ -6,6 +6,8 @@ class Util
 {
     public static function getElapsedTimeString($timeStr)
     {
+        if (is_null($timeStr)) return "Never done.";
+
         $start_date = new \DateTime($timeStr);
         $end_date = new \DateTime('now');
         $dd = date_diff($start_date,$end_date);

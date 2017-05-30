@@ -61,11 +61,7 @@
                     <td class="section">{{ $staffEntry->section }}</td>
                     <td class="join-date">{{ $staffEntry->joinDate }}</td>
                     <td>
-                        @if(isset($staffEntry->created_at))
-                            {{ \App\Logic\Util::getElapsedTimeString($staffEntry->created_at) }}
-                        @else
-                            Never Done
-                        @endif
+                        {{ \App\Logic\Util::getElapsedTimeString($staffEntry->created_at) }}
                     </td>
                     @if($editable)
                         <td>

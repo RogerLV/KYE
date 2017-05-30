@@ -68,7 +68,7 @@ class DatabaseSeeder extends Seeder
             ],
             4 => [
                 'ReviewPeriodView',
-                'Review Period Settings',
+                'Review Settings',
                 true,
                 'glyphicon glyphicon-calendar',
                 'ReviewPeriodController',

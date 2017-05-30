@@ -153,6 +153,11 @@ class OccupationalRiskOperationLog extends OperationLog
         $log->save();
     }
 
+    public static function hasPending()
+    {
+        return self::hasPendingRecord(self::$tableName);
+    }
+
     public static function getAllPendings()
     {
         return self::where('tableName', self::$tableName)

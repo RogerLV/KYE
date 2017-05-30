@@ -82,4 +82,9 @@ class KYECaseOperationLog extends OperationLog
 
         return $log;
     }
+
+    public static function hasPending()
+    {
+        return self::hasPendingRecord(self::$tableName);
+    }
 }
