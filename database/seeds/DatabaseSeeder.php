@@ -154,6 +154,14 @@ class DatabaseSeeder extends Seeder
                 'LogController',
                 'view',
             ],
+            15 => [
+                'LogError',
+                'Error Log Page',
+                true,
+                'glyphicon glyphicon-list',
+                'LogController',
+                'error',
+            ],
         ];
 
         foreach ($pages as $pageInfo) {
@@ -183,6 +191,7 @@ class DatabaseSeeder extends Seeder
             12 => [2],
             13 => [3],
             14 => [1, 2, 3, 4],
+            15 => [4],
         ];
 
         foreach ($pageControl as $pageID => $roleIDs) {

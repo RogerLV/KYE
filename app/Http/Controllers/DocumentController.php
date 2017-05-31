@@ -8,8 +8,13 @@ class DocumentController extends Controller
 {
     public function display($docID, $name)
     {
-    	$docIns = Document::findOrFail($docID);
+        $docIns = Document::findOrFail($docID);
 
-    	return response()->file($docIns->getPath());
+        return response()->file($docIns->getPath());
+    }
+
+    public function errorLog($logName)
+    {
+        return response()->file(storage_path('logs/'.$logName));
     }
 }
